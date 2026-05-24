@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Section Matrimony — EDU CSE Section Swap</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --bg:#0c0c0e;
+  --bg2:#121215;
+  --bg3:#18181d;
+  --rose:#c46e7a;
+  --rose-light:#e8a4ae;
+  --rose-dim:#6e3540;
+  --blush:#f0d4d8;
+  --gold:#c9a97a;
+  --text:#ede9e4;
+  --muted:#7a7670;
+  --border:rgba(196,110,122,0.16);
+  --border2:rgba(255,255,255,0.055);
+}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Jost',sans-serif;
+  font-weight:300;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+.glow-orb{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;}
+.glow-1{width:600px;height:600px;background:rgba(196,110,122,0.07);top:-200px;right:-150px;}
+.glow-2{width:450px;height:450px;background:rgba(201,169,122,0.05);bottom:-120px;left:-100px;}
+.glow-3{width:300px;height:300px;background:rgba(196,110,122,0.04);top:50%;left:50%;transform:translate(-50%,-50%);}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.3rem 3.5rem;
+  background:rgba(12,12,14,0.8);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border2);
+}
+.nav-logo{
+  font-family:'Cormorant',serif;
+  font-size:1.55rem;font-weight:500;letter-spacing:0.03em;
+  color:var(--text);text-decoration:none;
+}
+.nav-logo span{color:var(--rose);font-style:italic;}
+.nav-links{display:flex;gap:2.5rem;align-items:center;}
+.nav-links a{
+  font-size:0.78rem;font-weight:400;
+  color:var(--muted);text-decoration:none;
+  letter-spacing:0.12em;text-transform:uppercase;
+  transition:color .3s;
+}
+.nav-links a:hover{color:var(--rose-light);}
+.nav-cta{
+  background:transparent;
+  border:1px solid var(--rose-dim);
+  color:var(--rose-light);
+  padding:.5rem 1.5rem;
+  font-family:'Jost',sans-serif;font-size:0.78rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;
+  transition:all .3s;border-radius:1px;
+}
+.nav-cta:hover{background:rgba(110,53,64,0.4);color:var(--blush);}
+
+/* ── HERO ── */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;text-align:center;
+  padding:9rem 2rem 5rem;
+}
+.hero-eyebrow{
+  font-family:'Jost',sans-serif;
+  font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--rose);margin-bottom:2rem;
+  opacity:0;animation:fadeUp .8s .2s forwards;
+}
+.hero-title{
+  font-family:'Cormorant',serif;
+  font-size:clamp(4rem,10vw,8.5rem);
+  font-weight:300;line-height:.95;letter-spacing:-0.02em;
+  opacity:0;animation:fadeUp .9s .35s forwards;
+}
+.hero-title em{font-style:italic;color:var(--rose-light);}
+.hero-title .block{display:block;}
+
+.hero-divider{
+  width:1px;height:60px;
+  background:linear-gradient(to bottom,var(--rose-dim),transparent);
+  margin:2.5rem auto;
+  opacity:0;animation:fadeUp .9s .5s forwards;
+}
+
+.hero-sub{
+  font-size:clamp(0.9rem,1.8vw,1.05rem);
+  color:var(--muted);max-width:500px;margin:0 auto 2.5rem;
+  font-weight:300;letter-spacing:0.02em;line-height:1.85;
+  opacity:0;animation:fadeUp .9s .6s forwards;
+}
+.hero-sub strong{color:var(--text);font-weight:400;}
+
+.hero-btns{
+  display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;
+  opacity:0;animation:fadeUp .9s .75s forwards;
+}
+.btn-primary{
+  background:var(--rose);color:#0c0c0e;
+  padding:.9rem 2.5rem;
+  font-family:'Jost',sans-serif;font-size:0.82rem;font-weight:500;
+  letter-spacing:0.12em;text-transform:uppercase;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all .3s;border-radius:1px;
+}
+.btn-primary:hover{background:var(--rose-light);transform:translateY(-2px);}
+.btn-ghost{
+  background:transparent;color:var(--muted);
+  padding:.9rem 2.5rem;
+  font-family:'Jost',sans-serif;font-size:0.82rem;font-weight:300;
+  letter-spacing:0.12em;text-transform:uppercase;
+  text-decoration:none;border:1px solid var(--border2);
+  cursor:pointer;transition:all .3s;border-radius:1px;
+}
+.btn-ghost:hover{border-color:var(--rose-dim);color:var(--rose-light);}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  position:relative;z-index:1;
+  overflow:hidden;
+  border-top:1px solid var(--border2);
+  border-bottom:1px solid var(--border2);
+  background:var(--bg2);
+  padding:.9rem 0;
+}
+.marquee-track{
+  display:flex;gap:0;
+  animation:marquee 28s linear infinite;
+  width:max-content;
+}
+.marquee-item{
+  font-family:'Cormorant',serif;
+  font-size:1.1rem;font-weight:300;font-style:italic;
+  color:var(--muted);
+  padding:0 2.5rem;
+  border-right:1px solid var(--border2);
+  white-space:nowrap;
+  letter-spacing:0.04em;
+}
+.marquee-item span{color:var(--rose);}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── STAT BAR ── */
+.stat-bar{
+  position:relative;z-index:1;
+  display:flex;justify-content:center;flex-wrap:wrap;
+  border-bottom:1px solid var(--border2);
+}
+.stat-item{
+  padding:2.2rem 4rem;text-align:center;
+  border-right:1px solid var(--border2);
+  flex:1;min-width:140px;
+}
+.stat-item:last-child{border-right:none;}
+.stat-num{
+  font-family:'Cormorant',serif;
+  font-size:2.8rem;font-weight:300;
+  color:var(--rose-light);display:block;line-height:1;margin-bottom:.3rem;
+}
+.stat-label{
+  font-size:0.68rem;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+/* ── SECTIONS ── */
+section{position:relative;z-index:1;}
+.section-tag{
+  display:inline-block;
+  font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--rose);border:1px solid var(--rose-dim);
+  padding:.28rem .9rem;border-radius:1px;margin-bottom:1.3rem;
+  font-family:'Jost',sans-serif;font-weight:400;
+}
+.section-title{
+  font-family:'Cormorant',serif;
+  font-size:clamp(2.2rem,5vw,4rem);
+  font-weight:300;line-height:1.1;letter-spacing:-0.01em;
+}
+.section-title em{font-style:italic;color:var(--rose-light);}
+
+/* ── HOW IT WORKS ── */
+.how{padding:8rem 2rem;}
+.how-inner{max-width:1100px;margin:0 auto;}
+.how-header{text-align:center;margin-bottom:5rem;}
+.how-header p{
+  color:var(--muted);max-width:440px;margin:.9rem auto 0;
+  font-size:0.9rem;letter-spacing:0.03em;line-height:1.85;
+}
+.steps{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--border2);
+  border:1px solid var(--border2);
+}
+.step{
+  background:var(--bg);padding:3rem 2.2rem;
+  transition:background .4s;position:relative;overflow:hidden;
+}
+.step::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--rose-dim),transparent);
+  transform:scaleX(0);transition:transform .5s;
+}
+.step:hover{background:var(--bg2);}
+.step:hover::before{transform:scaleX(1);}
+.step-num{
+  font-family:'Cormorant',serif;
+  font-size:4rem;font-weight:300;
+  color:var(--rose-dim);line-height:1;
+  margin-bottom:1.5rem;opacity:.5;
+}
+.step-title{
+  font-family:'Cormorant',serif;
+  font-size:1.45rem;font-weight:500;
+  margin-bottom:.7rem;color:var(--text);letter-spacing:0.01em;
+}
+.step-desc{font-size:0.85rem;color:var(--muted);line-height:1.75;letter-spacing:0.02em;}
+
+/* ── ABOUT STRIP ── */
+.about-strip{
+  padding:6rem 2rem;
+  background:var(--bg2);
+  border-top:1px solid var(--border2);
+  border-bottom:1px solid var(--border2);
+}
+.about-inner{
+  max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;
+}
+.about-quote{
+  font-family:'Cormorant',serif;
+  font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:300;font-style:italic;
+  line-height:1.3;color:var(--text);letter-spacing:0.01em;
+}
+.about-quote em{color:var(--rose-light);font-style:normal;}
+.about-text p{
+  font-size:0.88rem;color:var(--muted);line-height:1.9;
+  margin-bottom:1.2rem;letter-spacing:0.02em;
+}
+.rose-line{width:50px;height:1px;background:linear-gradient(90deg,var(--rose),transparent);margin:1.5rem 0;}
+
+/* ── FORM ── */
+.form-section{padding:8rem 2rem;}
+.form-inner{
+  max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1.3fr;gap:6rem;align-items:start;
+}
+.form-info .section-title{margin-bottom:1rem;}
+.form-info p{
+  color:var(--muted);font-size:0.88rem;
+  margin-bottom:1.5rem;line-height:1.9;letter-spacing:0.02em;
+}
+.info-note{
+  display:flex;align-items:flex-start;gap:.8rem;
+  padding:1rem 1.2rem;margin-bottom:.8rem;
+  border:1px solid var(--border2);
+  border-left:2px solid var(--rose-dim);
+  background:rgba(196,110,122,0.04);
+}
+.info-note-label{
+  font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--rose);font-weight:500;margin-bottom:.2rem;
+}
+.info-note p{font-size:0.82rem;color:var(--muted);margin:0;line-height:1.65;letter-spacing:0.02em;}
+
+.form-card{
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  padding:2.8rem;border-radius:1px;
+}
+.form-card-header{margin-bottom:2rem;}
+.form-card-header h3{
+  font-family:'Cormorant',serif;
+  font-size:1.9rem;font-weight:400;letter-spacing:0.01em;margin-bottom:.2rem;
+}
+.form-card-header p{font-size:0.78rem;color:var(--muted);letter-spacing:0.08em;}
+
+.field{margin-bottom:1.4rem;}
+.field label{
+  display:block;font-size:0.68rem;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.5rem;font-weight:400;
+}
+.field input,.field select{
+  width:100%;background:var(--bg3);
+  border:1px solid var(--border2);
+  color:var(--text);padding:.8rem 1rem;
+  font-family:'Jost',sans-serif;
+  font-size:0.88rem;font-weight:300;
+  border-radius:1px;outline:none;
+  transition:border-color .3s;appearance:none;
+  letter-spacing:0.02em;
+}
+.field input::placeholder{color:var(--muted);}
+.field input:focus,.field select:focus{border-color:var(--rose-dim);}
+.field select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7670' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 1rem center;
+  padding-right:2.5rem;
+}
+.field select option{background:#18181d;color:var(--text);}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+
+.submit-btn{
+  width:100%;margin-top:1.8rem;
+  background:var(--rose);color:#0c0c0e;
+  padding:1.05rem;
+  font-family:'Jost',sans-serif;
+  font-size:0.8rem;font-weight:500;
+  letter-spacing:0.16em;text-transform:uppercase;
+  border:none;cursor:pointer;border-radius:1px;
+  transition:all .3s;
+}
+.submit-btn:hover{background:var(--rose-light);}
+.privacy-note{
+  text-align:center;margin-top:.9rem;
+  font-size:0.7rem;color:var(--muted);
+  letter-spacing:0.04em;line-height:1.6;
+}
+.privacy-note span{color:var(--rose-dim);}
+
+/* ── SECTION GRID ── */
+.section-grid-wrap{
+  padding:8rem 2rem;
+  background:var(--bg2);
+  border-top:1px solid var(--border2);
+}
+.section-grid-inner{max-width:1000px;margin:0 auto;}
+.section-grid-header{text-align:center;margin-bottom:4rem;}
+.section-grid-header p{color:var(--muted);max-width:400px;margin:.8rem auto 0;font-size:0.88rem;letter-spacing:0.02em;}
+
+.grid-10{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:1px;background:var(--border2);
+  border:1px solid var(--border2);margin-bottom:2rem;
+}
+.grid-cell{
+  background:var(--bg);padding:2rem 1rem;
+  text-align:center;transition:background .3s;
+}
+.grid-cell:hover,.grid-cell.active{background:rgba(196,110,122,0.07);}
+.grid-cell .sec-num{
+  font-family:'Cormorant',serif;
+  font-size:2.2rem;font-weight:300;color:var(--text);display:block;
+}
+.grid-cell.active .sec-num{color:var(--rose-light);}
+.grid-cell .sec-label{font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);}
+
+.grid-legend{display:flex;gap:2.5rem;justify-content:center;}
+.legend-item{display:flex;align-items:center;gap:.6rem;font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;}
+.legend-dot{width:7px;height:7px;border-radius:50%;}
+.legend-dot.on{background:var(--rose);}
+.legend-dot.off{background:transparent;border:1px solid var(--muted);}
+
+/* ── FAQ ── */
+.faq{padding:8rem 2rem;border-top:1px solid var(--border2);}
+.faq-inner{max-width:680px;margin:0 auto;}
+.faq-header{text-align:center;margin-bottom:4rem;}
+.faq-header p{color:var(--muted);max-width:380px;margin:.8rem auto 0;font-size:0.88rem;}
+.faq-item{border-bottom:1px solid var(--border2);padding:1.6rem 0;}
+.faq-q{
+  font-family:'Cormorant',serif;
+  font-size:1.25rem;font-weight:400;
+  color:var(--text);cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  letter-spacing:0.01em;
+}
+.faq-q .plus{
+  color:var(--rose-dim);font-family:'Jost',sans-serif;
+  font-size:1.3rem;font-weight:200;
+  transition:transform .3s;flex-shrink:0;
+}
+.faq-item.open .plus{transform:rotate(45deg);}
+.faq-a{
+  font-size:0.86rem;color:var(--muted);line-height:1.85;
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease,padding .3s;
+  letter-spacing:0.02em;
+}
+.faq-item.open .faq-a{max-height:200px;padding-top:.9rem;}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  padding:5rem 3.5rem 2.5rem;
+  border-top:1px solid var(--border2);
+}
+.footer-top{
+  display:grid;grid-template-columns:1.5fr 1fr 1fr;
+  gap:4rem;margin-bottom:4rem;
+}
+.footer-brand .nav-logo{display:inline-block;margin-bottom:.8rem;}
+.footer-brand p{font-size:0.82rem;color:var(--muted);line-height:1.8;max-width:280px;letter-spacing:0.02em;}
+.footer-col h4{
+  font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--rose);margin-bottom:1.2rem;font-weight:400;
+}
+.footer-col a{
+  display:block;font-size:0.82rem;color:var(--muted);
+  text-decoration:none;letter-spacing:0.04em;
+  margin-bottom:.65rem;transition:color .3s;
+}
+.footer-col a:hover{color:var(--rose-light);}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+  padding-top:2rem;border-top:1px solid var(--border2);
+}
+.footer-bottom p{font-size:0.72rem;color:var(--muted);letter-spacing:0.06em;}
+.footer-bottom .heart{color:var(--rose);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  nav{padding:1.1rem 1.5rem;}
+  .nav-links{display:none;}
+  .steps{grid-template-columns:1fr 1fr;}
+  .about-inner{grid-template-columns:1fr;gap:2.5rem;}
+  .form-inner{grid-template-columns:1fr;gap:3rem;}
+  .stat-item{padding:1.6rem 2rem;border-right:none;border-bottom:1px solid var(--border2);}
+  .footer-top{grid-template-columns:1fr;gap:2rem;}
+  .grid-10{grid-template-columns:repeat(5,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="glow-orb glow-1"></div>
+<div class="glow-orb glow-2"></div>
+<div class="glow-orb glow-3"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Section <span>Matrimony</span></a>
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#sections">Sections</a>
+    <a href="#faq">FAQ</a>
+    <a href="#form" class="nav-cta">Find My Match</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">East Delta University &nbsp;·&nbsp; CSE Department</p>
+  <h1 class="hero-title">
+    <span class="block">Find Your</span>
+    <em>Perfect Swap.</em>
+  </h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">
+    Want to change your section? Finding the right swap partner just got effortless.
+    <strong>Section Matrimony</strong> matches you with the perfect swap — automatically.
+  </p>
+  <div class="hero-btns">
+    <a href="#form" class="btn-primary">Find My Match →</a>
+    <a href="#how" class="btn-ghost">How It Works</a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Section <span>01</span> → 02</div>
+    <div class="marquee-item">Section <span>05</span> → 03</div>
+    <div class="marquee-item">Section <span>08</span> → 10</div>
+    <div class="marquee-item">Section <span>02</span> → 07</div>
+    <div class="marquee-item">Section <span>04</span> → 09</div>
+    <div class="marquee-item">Section <span>06</span> → 01</div>
+    <div class="marquee-item">Section <span>10</span> → 04</div>
+    <div class="marquee-item">Section <span>03</span> → 06</div>
+    <div class="marquee-item">Section <span>01</span> → 02</div>
+    <div class="marquee-item">Section <span>05</span> → 03</div>
+    <div class="marquee-item">Section <span>08</span> → 10</div>
+    <div class="marquee-item">Section <span>02</span> → 07</div>
+    <div class="marquee-item">Section <span>04</span> → 09</div>
+    <div class="marquee-item">Section <span>06</span> → 01</div>
+    <div class="marquee-item">Section <span>10</span> → 04</div>
+    <div class="marquee-item">Section <span>03</span> → 06</div>
+  </div>
+</div>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat-item"><span class="stat-num">10</span><span class="stat-label">Total Sections</span></div>
+  <div class="stat-item"><span class="stat-num">Free</span><span class="stat-label">Always & Forever</span></div>
+  <div class="stat-item"><span class="stat-num">Auto</span><span class="stat-label">Match System</span></div>
+  <div class="stat-item"><span class="stat-num">EDU</span><span class="stat-label">CSE Only</span></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <span class="section-tag">The Process</span>
+      <h2 class="section-title">How Does<br><em>Section Matrimony</em> Work?</h2>
+      <p>Four simple steps to find your perfect section swap partner.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Submit a Request</h3>
+        <p class="step-desc">Fill in your name, Student ID, university email, current section, desired section, and contact info. Takes less than a minute.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3 class="step-title">System Searches</h3>
+        <p class="step-desc">Our matching system instantly scans the database for someone who wants the exact opposite swap — your desired section to yours.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Get Notified</h3>
+        <p class="step-desc">When a match is found, both of you receive an email with each other's contact details. Your info stays private until a match is confirmed.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3 class="step-title">Complete the Swap</h3>
+        <p class="step-desc">Reach out to your match, agree on the swap, and head to the department together to complete the official section change process.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT STRIP -->
+<div class="about-strip">
+  <div class="about-inner">
+    <div class="about-quote">
+      "Finding the right section swap used to take <em>days of searching.</em> Now it takes seconds."
+    </div>
+    <div class="about-text">
+      <div class="rose-line"></div>
+      <p>Section Matrimony was built for one reason — to solve a problem every EDU CSE student faces. Posting on Facebook groups, asking friends, waiting days for a reply. It should not be this hard.</p>
+      <p>This platform automates the entire process. Submit your request, and let the system do the searching. Your contact info is never exposed until a mutual match is confirmed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<section class="form-section" id="form">
+  <div class="form-inner">
+    <div class="form-info">
+      <span class="section-tag">Register Now</span>
+      <h2 class="section-title">Find Your<br><em>Match Today</em></h2>
+      <div class="rose-line"></div>
+      <p>Fill in the form and our system will search for your perfect swap partner. If no one is available right now, your request stays active and you will be notified the moment a match appears.</p>
+
+      <div class="info-note">
+        <div>
+          <div class="info-note-label">Privacy First</div>
+          <p>Your WhatsApp or Facebook is only shared after a mutual match is confirmed. No one can browse your contact info.</p>
+        </div>
+      </div>
+      <div class="info-note">
+        <div>
+          <div class="info-note-label">EDU Students Only</div>
+          <p>This platform is exclusively for East Delta University CSE Department students.</p>
+        </div>
+      </div>
+      <div class="info-note">
+        <div>
+          <div class="info-note-label">Completely Free</div>
+          <p>Section Matrimony is a student-made initiative. No fees, no charges, no hidden costs — ever.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-header">
+        <h3>Submit Swap Request</h3>
+        <p>All fields are required</p>
+      </div>
+
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" placeholder="Your full name"/>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Student ID</label>
+          <input type="text" placeholder="e.g. 2021-1-60-001"/>
+        </div>
+        <div class="field">
+          <label>University Email</label>
+          <input type="email" placeholder="name@eastdelta.edu.bd"/>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Current Section</label>
+          <select>
+            <option value="" disabled selected>Select</option>
+            <option>Section 01</option><option>Section 02</option>
+            <option>Section 03</option><option>Section 04</option>
+            <option>Section 05</option><option>Section 06</option>
+            <option>Section 07</option><option>Section 08</option>
+            <option>Section 09</option><option>Section 10</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Desired Section</label>
+          <select>
+            <option value="" disabled selected>Select</option>
+            <option>Section 01</option><option>Section 02</option>
+            <option>Section 03</option><option>Section 04</option>
+            <option>Section 05</option><option>Section 06</option>
+            <option>Section 07</option><option>Section 08</option>
+            <option>Section 09</option><option>Section 10</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>WhatsApp Number or Facebook Profile Link</label>
+        <input type="text" placeholder="Shared only after a match is confirmed"/>
+      </div>
+
+      <button class="submit-btn">Find My Match →</button>
+      <p class="privacy-note">By submitting, you agree to our <span>Privacy Policy</span>.<br>Your contact is only revealed to a confirmed match.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION GRID -->
+<section class="section-grid-wrap" id="sections">
+  <div class="section-grid-inner">
+    <div class="section-grid-header">
+      <span class="section-tag">Sections</span>
+      <h2 class="section-title">All CSE <em>Sections</em></h2>
+      <p>All 10 sections of the EDU CSE Department. Any section-to-section swap is possible.</p>
+    </div>
+    <div class="grid-10">
+      <div class="grid-cell active"><span class="sec-num">01</span><div class="sec-label">Available</div></div>
+      <div class="grid-cell active"><span class="sec-num">02</span><div class="sec-label">Available</div></div>
+      <div class="grid-cell active"><span class="sec-num">03</span><div class="sec-label">Available</div></div>
+      <div class="grid-cell active"><span class="sec-num">04</span><div class="sec-label">Available</div></div>
+      <div class="grid-cell active"><span class="sec-num">05</span><div class="sec-label">Available</div></div>
+      <div class="grid-cell active"><span class="sec-num">06</span><div class="sec-label">Available</div></div>
+      <div class="grid-cell active"><span class="sec-num">07</span><div class="sec-label">Available</div></div>
+      <div class="grid-cell active"><span class="sec-num">08</span><div class="sec-label">Available</div></div>
+      <div class="grid-cell active"><span class="sec-num">09</span><div class="sec-label">Available</div></div>
+      <div class="grid-cell active"><span class="sec-num">10</span><div class="sec-label">Available</div></div>
+    </div>
+    <div class="grid-legend">
+      <div class="legend-item"><div class="legend-dot on"></div>Swap available</div>
+      <div class="legend-item"><div class="legend-dot off"></div>No pending requests</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <span class="section-tag">FAQ</span>
+      <h2 class="section-title">Common <em>Questions</em></h2>
+      <p>Everything you need to know before submitting your request.</p>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How long does it take to find a match?<span class="plus">+</span></div>
+      <div class="faq-a">It depends on whether someone has already submitted the opposite request. If they have, you will be matched instantly. If not, your request stays active and you will be notified automatically the moment a match appears.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can everyone see my contact info?<span class="plus">+</span></div>
+      <div class="faq-a">No. Your WhatsApp number or Facebook profile link is only shared with your match — and only after both requests are confirmed as a mutual match. No one can browse your contact details.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What do I do after getting a match?<span class="plus">+</span></div>
+      <div class="faq-a">You will receive an email notification with your match's contact info. Reach out to them, confirm the swap, and then both of you visit the CSE department office together to complete the official section change process.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is this only for CSE students?<span class="plus">+</span></div>
+      <div class="faq-a">Yes. Section Matrimony is built specifically for East Delta University CSE Department students only. You must have a valid EDU university email to submit a request.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is this service free?<span class="plus">+</span></div>
+      <div class="faq-a">Completely free. Section Matrimony is a student-made initiative built to help fellow EDU students. There are no fees, no subscriptions, and no hidden charges — now or ever.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I cancel or update my request?<span class="plus">+</span></div>
+      <div class="faq-a">Yes. If you change your mind or no longer need a swap, simply contact us through the info below and we will remove your request from the database immediately.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Section <span style="color:var(--rose);font-style:italic;">Matrimony</span></a>
+      <p>A student-made section swap platform built exclusively for East Delta University CSE Department students.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <a href="#how">How It Works</a>
+      <a href="#sections">All Sections</a>
+      <a href="#form">Find My Match</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">EDU Official Site</a>
+      <a href="#">Contact Admin</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Section Matrimony · East Delta University CSE</p>
+    <p>Made with <span class="heart">♥</span> for EDU Students</p>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(el){
+  const item=el.parentElement;
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-80,behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
