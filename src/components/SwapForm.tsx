@@ -150,7 +150,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g.Ronaldo"
+                  
                     className="form-input"
                   />
                 </div>
@@ -164,9 +164,9 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     id="student-id"
                     type="text"
                     required
-                    value={studentId}
+                    value={studentId}https://github.com/nmaverse/Section-Matrimony-EDU/blob/main/src/components/SwapForm.tsx
                     onChange={(e) => setStudentId(e.target.value)}
-                    placeholder="e.g. 221002015"
+                   
                     className="form-input"
                   />
                 </div>
