@@ -150,7 +150,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. S. M. Rahat"
+                    placeholder="e.g.Ronaldo"
                     className="form-input"
                   />
                 </div>
