@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeftRight, HelpCircle, Mail, Globe, MapPin, ExternalLink, Heart } from 'lucide-react';
+import { ArrowLeftRight, HelpCircle, Mail, Globe, MapPin, ExternalLink, Heart, Facebook } from 'lucide-react';
 
 interface FooterProps {
   onHowItWorksClick: () => void;
@@ -28,7 +28,7 @@ export default function Footer({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Main Grid content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 pb-12 border-b border-rose-gold/10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-12 pb-12 border-b border-rose-gold/10">
           
           {/* Brand Col */}
           <div className="md:col-span-1.5 space-y-4">
@@ -137,6 +137,26 @@ export default function Footer({
                   className="hover:text-white transition-colors inline-flex items-center gap-1"
                 >
                   EDU CSE Club <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Built By Col */}
+          <div className="space-y-4">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-gold">
+              Built By
+            </h4>
+            <ul className="space-y-2 text-xs text-neutral-400">
+              <li className="flex items-center gap-2">
+                <Facebook className="w-3.5 h-3.5 text-neutral-500 hover:text-[#1877f2] transition-all" />
+                <a
+                  href="https://www.facebook.com/nosaibmahmodadil"
+               
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors inline-flex items-center gap-1.5"
+                >
+                  Nosaib Mahmod Adil <ExternalLink className="w-2.5 h-2.5 text-neutral-600" />
                 </a>
               </li>
             </ul>
