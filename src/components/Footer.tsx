@@ -142,10 +142,10 @@ export default function Footer({
             </ul>
           </div>
 
-          {/* Built By Col */}
+          {/* Developed By Col */}
           <div className="space-y-4">
             <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-gold">
-              Built By
+              Developed By
             </h4>
             <ul className="space-y-2 text-xs text-neutral-400">
               <li className="flex items-center gap-2">
@@ -157,7 +157,13 @@ export default function Footer({
                   className="hover:text-white transition-colors inline-flex items-center gap-1.5"
                 >
                   Nosaib Mahmod Adil <ExternalLink className="w-2.5 h-2.5 text-neutral-600" />
-                </a>
+                </a
+                 <p className="text-xs text-neutral-400 font-light leading-relaxed max-w-sm">
+                   Department Of CSE
+                   School of Science And Technology
+                   East Delta University
+            </p>
+
               </li>
             </ul>
           </div>
