@@ -42,7 +42,6 @@ export default function SectionGrid({ requests }: SectionGridProps) {
   }, [requests]);
 
   // Find all reciprocal perfect matches!
-  // A perfect match is where Student A is (Curr: X, Des: Y) and Student B is (Curr: Y, Des: X)
   const perfectMatches = useMemo(() => {
     const matches: Array<{ reqA: SwapRequest; reqB: SwapRequest }> = [];
     const processed = new Set<string>();
@@ -62,7 +61,7 @@ export default function SectionGrid({ requests }: SectionGridProps) {
           matches.push({ reqA, reqB });
           processed.add(reqA.id);
           processed.add(reqB.id);
-          break; // break inner loop so we don't double match inside this pass
+          break; 
         }
       }
     }
@@ -119,10 +118,9 @@ export default function SectionGrid({ requests }: SectionGridProps) {
           </p>
         </div>
 
-        {/* 1. Reciprocal Matches Sparkle Bar - Always display if any exist! */}
+        {/* 1. Reciprocal Matches Sparkle Bar */}
         {perfectMatches.length > 0 && (
           <div className="mb-14 p-6 md:p-8 rounded-3xl border border-rose-gold/30 bg-gradient-to-r from-rose-gold/5 via-charcoal-mid to-[#161113] relative overflow-hidden shadow-xl">
-            {/* Ambient gold glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-rose-gold/15 rounded-full blur-2xl" />
             
             <div className="flex items-center gap-2 mb-6">
@@ -154,14 +152,14 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                     
                     {/* Student A info */}
                     <div className="pr-2">
-                      <h4 className="text-sm font-semibold text-neutral-100 truncate">{reqA.name}</h4>
+                       <h4 className="text-sm font-semibold text-neutral-100 truncate">{reqA.name}</h4>
                       <p className="text-[11px] text-neutral-500 font-mono mb-2">{reqA.studentId}</p>
                       <div className="flex gap-2">
                         <a
                           href={`https://wa.me/${reqA.whatsapp.replace(/\+/g, '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all"
+                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all font-light"
                           title="WhatsApp chat"
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
@@ -189,7 +187,7 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                           href={`https://wa.me/${reqB.whatsapp.replace(/\+/g, '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all"
+                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all font-light"
                           title="WhatsApp chat"
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
@@ -216,7 +214,7 @@ export default function SectionGrid({ requests }: SectionGridProps) {
           </div>
         )}
 
-        {/* 2. Interactive Section Grid (Showing all 10 sections) */}
+        {/* 2. Interactive Section Grid */}
         <div className="mb-12">
           <h3 className="font-display text-2xl font-semibold text-white mb-6 flex items-center gap-2">
             <span>Select Section to View Filings</span>
@@ -243,7 +241,6 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                       : 'border-rose-gold/15 bg-[#141418]/60 hover:bg-charcoal-light/95 hover:border-rose-gold/30'
                   }`}
                 >
-                  {/* Decorative corner indicator */}
                   {isSelected && (
                     <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-rose-gold animate-ping" />
                   )}
@@ -256,7 +253,6 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                     {sectionName}
                   </span>
 
-                  {/* Outbound vs Inbound sub-stats */}
                   <div className="space-y-1.5 text-xs">
                     <div className="flex justify-between text-neutral-400">
                       <span>Outgoing:</span>
@@ -280,9 +276,7 @@ export default function SectionGrid({ requests }: SectionGridProps) {
         {/* 3. Filtering Toolbar & Results Directory */}
         <div className="p-6 md:p-8 rounded-3xl border border-rose-gold/10 bg-charcoal-mid/40 backdrop-blur-md">
           
-          {/* Controls Bar */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-rose-gold/5">
-            
             <div className="flex items-center gap-3">
               <Filter className="w-4 h-4 text-rose-gold" />
               <h4 className="font-display text-xl font-semibold text-white">
@@ -290,9 +284,7 @@ export default function SectionGrid({ requests }: SectionGridProps) {
               </h4>
             </div>
 
-            {/* Combined Filter Controllers */}
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-              
               {/* Query Search */}
               <div className="relative w-full sm:w-60">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
@@ -305,7 +297,7 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                 />
               </div>
 
-              {/* Status/Direction Filters (Only applicable if a Section is selected) */}
+              {/* Status/Direction Filters */}
               {selectedSection && (
                 <div className="relative w-full sm:w-auto">
                   <select
@@ -322,7 +314,6 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                   </div>
                 </div>
               )}
-
             </div>
           </div>
 
@@ -340,7 +331,6 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                   key={req.id}
                   className="p-5 rounded-2xl border border-rose-gold/10 bg-[#0c0c0e]/80 hover:border-rose-gold/20 transition-all duration-300 relative group"
                 >
-                  {/* Swap Visual Indicator */}
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <div className="flex flex-col">
                       <span className="text-[10px] text-neutral-500 uppercase tracking-wider font-mono">Current</span>
