@@ -150,7 +150,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. S. M. Rahat"
+                    placeholder="e.g. Nosaib Adil"
                     className="form-input"
                   />
                 </div>
@@ -166,7 +166,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     required
                     value={studentId}
                     onChange={(e) => setStudentId(e.target.value)}
-                    placeholder="e.g. 221002015"
+                    placeholder="e.g. 262056112 "
                     className="form-input"
                   />
                 </div>
