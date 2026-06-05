@@ -142,31 +142,26 @@ export default function Footer({
             </ul>
           </div>
 
-          {/* Developed By Col */}
-          <div className="space-y-4">
-            <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-gold">
-              Developed By
-            </h4>
-            <ul className="space-y-2 text-xs text-neutral-400">
-              <li className="flex items-center gap-2">
-                <Facebook className="w-3.5 h-3.5 text-neutral-500 hover:text-[#1877f2] transition-all" />
-                <a
-                  href="https://www.facebook.com/nosaibmahmodadil"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors inline-flex items-center gap-1.5"
-                >
-                  Nosaib Mahmod Adil <ExternalLink className="w-2.5 h-2.5 text-neutral-600" />
-                </a>
-                 <p className="text-xs text-neutral-400 font-light leading-relaxed max-w-sm">
-                   Department Of CSE
-                   School of Science And Technology
-                   East Delta University
-            </p>
-
-              </li>
-            </ul>
-          </div>
+{ /* Developed By Col */ }
+<div className="space-y-4">
+  <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-gold"> 
+    Developed By 
+  </h4>
+  <div className="flex flex-col gap-2"> {/* এখানে flex-col ব্যবহার করছি যাতে নিচে নিচে থাকে */}
+    <a 
+      href="https://www.facebook.com/nosaibmahmodadil" 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="text-xs text-neutral-400 hover:text-white transition-colors inline-flex items-center gap-1.5"
+    >
+      <Facebook className="w-3.5 h-3.5 text-neutral-500 hover:text-[#1877f2]" />
+      Nosaib Mahmod Adil <ExternalLink className="w-2.5 h-2.5 text-neutral-600" />
+    </a>
+    <p className="text-xs text-neutral-500 font-light leading-relaxed max-w-sm"> 
+      Department Of CSE <br /> School of Science And Technology <br /> East Delta University 
+    </p>
+  </div>
+</div>
 
           {/* Legal and Disclaimer */}
           <div className="space-y-4">
