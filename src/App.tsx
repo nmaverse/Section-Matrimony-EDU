@@ -152,7 +152,7 @@ export default function App() {
 
       {/* 4. Instant Reciprocal Matrimony MATCH ALERT POPUP MODAL */}
       {matchAlert && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
           <div className="relative w-full max-w-xl p-6 md:p-8 rounded-3xl border border-rose-gold/40 bg-gradient-to-br from-charcoal-mid to-[#1e1416] text-center shadow-2xl overflow-hidden">
             
             {/* Visual background sparkles */}
