@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
 import SwapForm from './components/SwapForm';
-import SectionGrid from './components/SectionGrid';
+import SectionGrid, { getFacebookUrl } from './components/SectionGrid';
 import FaqSection from './components/FaqSection';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
@@ -152,7 +152,7 @@ export default function App() {
 
       {/* 4. Instant Reciprocal Matrimony MATCH ALERT POPUP MODAL */}
       {matchAlert && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
           <div className="relative w-full max-w-xl p-6 md:p-8 rounded-3xl border border-rose-gold/40 bg-gradient-to-br from-charcoal-mid to-[#1e1416] text-center shadow-2xl overflow-hidden">
             
             {/* Visual background sparkles */}
@@ -189,23 +189,25 @@ export default function App() {
               <p className="text-xs text-neutral-400 font-mono">ID: {matchAlert.matchedReq.studentId}</p>
               <p className="text-xs text-neutral-500 font-mono mt-0.5">{matchAlert.matchedReq.email}</p>
               
-              <div className="mt-4 pt-4 border-t border-rose-gold/5 grid grid-cols-2 gap-4">
+              <div className={`mt-4 pt-4 border-t border-rose-gold/5 ${matchAlert.matchedReq.facebook ? 'grid grid-cols-2 gap-4' : 'block'}`}>
                 <a
                   href={`https://wa.me/${matchAlert.matchedReq.whatsapp.replace(/\+/g, '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#25d366]/10 text-[#25d366] text-xs font-semibold hover:bg-[#25d366]/20 border border-[#25d366]/20 transition-all cursor-pointer"
+                  className="flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#25d366]/10 text-[#25d366] text-xs font-semibold hover:bg-[#25d366]/20 border border-[#25d366]/20 transition-all cursor-pointer w-full"
                 >
                   <MessageSquare className="w-4 h-4" /> Chat on WhatsApp
                 </a>
-                <a
-                  href={matchAlert.matchedReq.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#1877f2]/10 text-[#1877f2] text-xs font-semibold hover:bg-[#1877f2]/20 border border-[#1877f2]/20 transition-all cursor-pointer"
-                >
-                  <Facebook className="w-4 h-4" /> Facebook Profile
-                </a>
+                {matchAlert.matchedReq.facebook && (
+                  <a
+                    href={getFacebookUrl(matchAlert.matchedReq.facebook)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#1877f2]/10 text-[#1877f2] text-xs font-semibold hover:bg-[#1877f2]/20 border border-[#1877f2]/20 transition-all cursor-pointer w-full"
+                  >
+                    <Facebook className="w-4 h-4" /> Facebook Profile
+                  </a>
+                )}
               </div>
             </div>
 
