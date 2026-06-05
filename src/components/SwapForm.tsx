@@ -123,7 +123,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
 
         {/* Normal High Refinement Reactive Form */}
         <div className="p-6 md:p-10 rounded-3xl border border-rose-gold/10 bg-charcoal-mid/70 backdrop-blur-md shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-rose-gold/2 rounded-full blur-xl" />
+          <div className="absolute top-0 right-0 w-24 h-24 bg-rose-gold/2 rounded-full blur-xl pointer-events-none" />
           
           <form onSubmit={handleFormSubmit} className="space-y-6">
               
@@ -150,7 +150,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                  
+                    placeholder="e.g. S. M. Rahat"
                     className="form-input"
                   />
                 </div>
@@ -164,9 +164,9 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     id="student-id"
                     type="text"
                     required
-                    value={studentId}https://github.com/nmaverse/Section-Matrimony-EDU/blob/main/src/components/SwapForm.tsx
+                    value={studentId}
                     onChange={(e) => setStudentId(e.target.value)}
-                   
+                    placeholder="e.g. 221002015"
                     className="form-input"
                   />
                 </div>
