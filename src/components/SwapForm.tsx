@@ -1,312 +1,239 @@
-import React, { useState } from 'react';
-import { Send, CheckCircle, AlertTriangle, HelpCircle, ArrowRightLeft, Sparkles } from 'lucide-react';
-import { SwapRequest } from '../types';
+import React, { useState, useEffect, useRef } from 'react';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import HowItWorks from './components/HowItWorks';
+import SwapForm from './components/SwapForm';
+import SectionGrid, { getFacebookUrl } from './components/SectionGrid';
+import FaqSection from './components/FaqSection';
+import Footer from './components/Footer';
+import AdminPanel from './components/AdminPanel';
+import { INITIAL_SWAP_REQUESTS, INITIAL_FAQ } from './data';
+import { SwapRequest } from './types';
+import { ArrowLeftRight, Sparkles, MessageSquare, Facebook, Check, X } from 'lucide-react';
 
-interface SwapFormProps {
-  onSubmitRequest: (newReq: Omit<SwapRequest, 'id' | 'createdAt' | 'status'>) => void;
-}
+const LOCAL_STORAGE_KEY = 'edu_section_matrimony_requests';
 
-export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
-  // Form values
-  const [name, setName] = useState('');
-  const [studentId, setStudentId] = useState('');
-  const [email, setEmail] = useState('');
-  const [currentSection, setCurrentSection] = useState('');
-  const [desiredSection, setDesiredSection] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [facebook, setFacebook] = useState('');
-
-  // Form states
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const sectionsList = Array.from({ length: 10 }, (_, i) => {
-    const num = i + 1;
-    return `Section ${num < 10 ? '0' + num : num}`;
+export default function App() {
+  const [requests, setRequests] = useState<SwapRequest[]>(() => {
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse saved requests, defaulting to preseeded.', e);
+      }
+    }
+    return INITIAL_SWAP_REQUESTS;
   });
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg(null);
+  // Modal alert state for direct match found on submit!
+  const [matchAlert, setMatchAlert] = useState<{
+    yourReq: SwapRequest;
+    matchedReq: SwapRequest;
+  } | null>(null);
 
-    // Basic Validation
-    if (!name.trim()) return setErrorMsg('Student Name is required.');
-    if (!studentId.trim()) return setErrorMsg('Student ID is required.');
-    if (!email.trim()) return setErrorMsg('University Email is required.');
-    if (!currentSection) return setErrorMsg('Please choose your Current Section.');
-    if (!desiredSection) return setErrorMsg('Please choose your Desired Section.');
-    if (!whatsapp.trim()) return setErrorMsg('WhatsApp Number is required to coordinate.');
-    if (!facebook.trim()) return setErrorMsg('Facebook Profile Link is required.');
+  // Sync to local storage
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(requests));
+  }, [requests]);
 
-    // Email Check (East Delta University preferred but validate standard Email form)
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      return setErrorMsg('Please provide a valid University Email address.');
+  // Section scroll references
+  const howItWorksRef = useRef<HTMLDivElement>(null);
+  const activeSwapsRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const faqRef = useRef<HTMLDivElement>(null);
+
+  const scrollRef = (ref: React.RefObject<HTMLDivElement | null>) => {
+    if (ref && ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
 
-    // Constraint Check: Current Section & Desired Section cannot be the same
-    if (currentSection === desiredSection) {
-      return setErrorMsg('Validation Error: Current Section and Desired Section cannot be identical. You must select different sections to swap.');
-    }
+  // Triggered when a new Request is validated and submitted in the Form
+  const handleAddRequest = (newFields: Omit<SwapRequest, 'id' | 'createdAt' | 'status'>) => {
+    const newRequest: SwapRequest = {
+      ...newFields,
+      id: `req_${Date.now()}`,
+      createdAt: new Date().toISOString(),
+      status: 'active',
+    };
 
-    // Pass up to App state
-    setIsSubmitting(true);
-    setTimeout(() => {
-      onSubmitRequest({
-        name,
-        studentId,
-        email,
-        currentSection,
-        desiredSection,
-        whatsapp,
-        facebook,
+    // Check if we immediately have a reciprocal match in the active database!
+    const partnerMatch = requests.find(
+      (r) =>
+        r.status === 'active' &&
+        r.currentSection === newRequest.desiredSection &&
+        r.desiredSection === newRequest.currentSection
+    );
+
+    // Save the new request
+    setRequests((prev) => [newRequest, ...prev]);
+
+    // If an instant partner match is found, trigger the match alert modal!
+    if (partnerMatch) {
+      setMatchAlert({
+        yourReq: newRequest,
+        matchedReq: partnerMatch,
       });
+    }
+  };
 
-      setSuccess(true);
-      setIsSubmitting(false);
+  // Admin Control handlers
+  const handleDeleteRequest = (id: string) => {
+    setRequests((prev) => prev.filter((r) => r.id !== id));
+  };
 
-      // Clear Form Fields
-      setName('');
-      setStudentId('');
-      setEmail('');
-      setCurrentSection('');
-      setDesiredSection('');
-      setWhatsapp('');
-      setFacebook('');
-    }, 1200);
+  const handleClearAll = () => {
+    setRequests([]);
+  };
+
+  const handleResetDefaults = () => {
+    setRequests(INITIAL_SWAP_REQUESTS);
   };
 
   return (
-    <section id="form-section" className="relative py-24 bg-[#0a0a0c] overflow-hidden">
-      {/* Decorative background overlay */}
-      <div className="glow-spot w-[40vw] h-[40vw] bottom-[-5vw] left-[5%] bg-rose-gold/10" />
-      <div className="glow-spot w-[30vw] h-[30vw] top-[-5vw] right-[5%] bg-dusty-pink/10" />
+    <div className="min-h-screen bg-[#0c0c0e] text-white flex flex-col font-sans selection:bg-rose-gold/30 selection:text-white">
+      
+      {/* Decorative full-body glow highlights */}
+      <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-rose-gold/5 rounded-full blur-[110px] pointer-events-none" />
+      <div className="absolute top-[20%] left-0 w-[35vw] h-[35vw] bg-dusty-pink/3 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-semibold uppercase tracking-[0.25em] text-rose-gold block mb-3">
-            Matchmaking Registration
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl font-semibold text-white mb-4">
-            Register Your Swap Request
-          </h2>
-          <div className="h-[2px] w-12 bg-rose-gold mx-auto mb-4" />
-          <p className="text-sm md:text-base text-neutral-400 font-light">
-            Fill in your scheduling data below. Once submitted, your request will instantly go live inside our 10-section database for potential swap partners to view.
-          </p>
-        </div>
+      {/* Navigation Layer */}
+      <Navbar
+        onSubmitRequestClick={() => scrollRef(formRef)}
+        onHowItWorksClick={() => scrollRef(howItWorksRef)}
+        onActiveSwapsClick={() => scrollRef(activeSwapsRef)}
+        onFaqClick={() => scrollRef(faqRef)}
+      />
 
-        {/* Success Modal/Banner */}
-        {success && (
-          <div className="mb-12 p-8 rounded-2xl border border-emerald-500/20 bg-emerald-950/20 text-center relative overflow-hidden animate-fade-in">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-50" />
-            <div className="w-16 h-16 rounded-full border border-emerald-500 bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-8 h-8" />
-            </div>
-            <h3 className="font-display text-3xl font-semibold text-white mb-2">
-              Swap Registration Complete!
-            </h3>
-            <p className="text-neutral-300 max-w-lg mx-auto text-sm leading-relaxed mb-6">
-              Your match listing is now <span className="text-emerald-400 font-medium">LIVE</span> in the Active Directory. Potential swap partners can now see your request and reach out to you via WhatsApp or Facebook Profile.
-            </p>
-            <button
-              onClick={() => setSuccess(false)}
-              className="inline-flex h-11 px-6 rounded-full border border-emerald-500/40 hover:bg-emerald-500/10 text-white text-sm font-medium transition-all"
-            >
-              Register Another Request / Close
-            </button>
-          </div>
-        )}
+      {/* Hero Header Module */}
+      <Hero
+        onFindMatchClick={() => scrollRef(formRef)}
+        activeRequestsCount={requests.filter(r => r.status === 'active').length}
+      />
 
-        {/* Normal High Refinement Reactive Form */}
-        <div className="p-6 md:p-10 rounded-3xl border border-rose-gold/10 bg-charcoal-mid/70 backdrop-blur-md shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-rose-gold/2 rounded-full blur-xl pointer-events-none" />
-          
-          <form onSubmit={handleFormSubmit} className="space-y-6">
-              
-              {/* Form Error Banner */}
-              {errorMsg && (
-                <div className="p-4 rounded-xl border border-rose-gold/35 bg-rose-gold/5 flex items-start gap-3 animate-shake">
-                  <AlertTriangle className="w-5 h-5 text-rose-gold shrink-0 mt-0.5" />
-                  <span className="text-sm font-medium text-rose-gold/90">
-                    {errorMsg}
-                  </span>
-                </div>
-              )}
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                {/* Name */}
-                <div>
-                  <label htmlFor="student-name" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
-                    Student Name <span className="text-rose-gold">*</span>
-                  </label>
-                  <input
-                    id="student-name"
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Nosaib Adil"
-                    className="form-input"
-                  />
-                </div>
-
-                {/* ID */}
-                <div>
-                  <label htmlFor="student-id" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
-                    Student ID <span className="text-rose-gold">*</span>
-                  </label>
-                  <input
-                    id="student-id"
-                    type="text"
-                    required
-                    value={studentId}
-                    onChange={(e) => setStudentId(e.target.value)}
-                    placeholder="e.g. 262056112 "
-                    className="form-input"
-                  />
-                </div>
-
-                {/* Email */}
-                <div className="md:col-span-2">
-                  <label htmlFor="student-email" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
-                    University Email <span className="text-rose-gold">*</span>
-                  </label>
-                  <input
-                    id="student-email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="e.g. 221002015@eastdelta.edu.bd"
-                    className="form-input"
-                  />
-                  <p className="text-[11px] text-neutral-500 mt-1.5 font-light">
-                    Your official university domain email address is safe.
-                  </p>
-                </div>
-
-                {/* Current Section Dropdown */}
-                <div>
-                  <label htmlFor="current-section" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
-                    Current Section <span className="text-rose-gold">*</span>
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="current-section"
-                      required
-                      value={currentSection}
-                      onChange={(e) => setCurrentSection(e.target.value)}
-                      className="form-input bg-charcoal-dark"
-                    >
-                      <option value="">Choose Current Section</option>
-                      {sectionsList.map((sec) => (
-                        <option key={`curr-${sec}`} value={sec}>
-                          {sec}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400">
-                      ▼
-                    </div>
-                  </div>
-                </div>
-
-                {/* Desired Section Dropdown */}
-                <div>
-                  <label htmlFor="desired-section" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
-                    Desired Section <span className="text-rose-gold">*</span>
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="desired-section"
-                      required
-                      value={desiredSection}
-                      onChange={(e) => setDesiredSection(e.target.value)}
-                      className="form-input bg-charcoal-dark"
-                    >
-                      <option value="">Choose Desired Section</option>
-                      {sectionsList.map((sec) => (
-                        <option key={`des-${sec}`} value={sec}>
-                          {sec}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400">
-                      ▼
-                    </div>
-                  </div>
-                </div>
-
-                {/* WhatsApp Number */}
-                <div>
-                  <label htmlFor="student-whatsapp" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
-                    WhatsApp Number <span className="text-rose-gold">*</span>
-                  </label>
-                  <input
-                    id="student-whatsapp"
-                    type="text"
-                    required
-                    value={whatsapp}
-                    onChange={(e) => setWhatsapp(e.target.value)}
-                    placeholder="e.g. +88017XXXXXXXX"
-                    className="form-input"
-                  />
-                  <p className="text-[11px] text-neutral-500 mt-1.5 font-light">
-                    Double-check so matching partners can message you.
-                  </p>
-                </div>
-
-                {/* Facebook Profile Link */}
-                <div>
-                  <label htmlFor="student-facebook" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
-                    Facebook Profile Link <span className="text-rose-gold">*</span>
-                  </label>
-                  <input
-                    id="student-facebook"
-                    type="url"
-                    required
-                    value={facebook}
-                    onChange={(e) => setFacebook(e.target.value)}
-                    placeholder="e.g. https://facebook.com/username"
-                    className="form-input"
-                  />
-                  <p className="text-[11px] text-neutral-500 mt-1.5 font-light">
-                    Alternative channel for social sync swapping.
-                  </p>
-                </div>
-
-              </div>
-
-              {/* Submit CTA */}
-              <div className="pt-4 border-t border-rose-gold/10 flex justify-end">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 h-12 rounded-full bg-rose-gold text-white font-medium tracking-wider hover:bg-dusty-pink disabled:opacity-50 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 cursor-pointer shadow-md shadow-rose-gold/5"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-                      Saving and Syncing...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      Register Search Request
-                    </>
-                  )}
-                </button>
-              </div>
-
-            </form>
-          </div>
-        
+      {/* How It Works Guide */}
+      <div ref={howItWorksRef} className="scroll-mt-20">
+        <HowItWorks />
       </div>
-    </section>
+
+      {/* Reactive Registration Form */}
+      <div ref={formRef} className="scroll-mt-20">
+        <SwapForm onSubmitRequest={handleAddRequest} />
+      </div>
+
+      {/* Interactive 10-Section Directory */}
+      <div ref={activeSwapsRef} className="scroll-mt-20">
+        <SectionGrid requests={requests} />
+      </div>
+
+      {/* FAQ Accordions Section */}
+      <div ref={faqRef} className="scroll-mt-20">
+        <FaqSection faqItems={INITIAL_FAQ} />
+      </div>
+
+      {/* Admin Panel Control Workspace */}
+      <div className="scroll-mt-20">
+        <AdminPanel
+          requests={requests}
+          onDeleteRequest={handleDeleteRequest}
+          onClearAll={handleClearAll}
+          onResetDefaults={handleResetDefaults}
+        />
+      </div>
+
+      {/* Footer Branding Navigation */}
+      <Footer
+        onSubmitRequestClick={() => scrollRef(formRef)}
+        onHowItWorksClick={() => scrollRef(howItWorksRef)}
+        onActiveSwapsClick={() => scrollRef(activeSwapsRef)}
+        onFaqClick={() => scrollRef(faqRef)}
+      />
+
+      {/* 4. Instant Reciprocal Matrimony MATCH ALERT POPUP MODAL */}
+      {matchAlert && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-xl p-6 md:p-8 rounded-3xl border border-rose-gold/40 bg-gradient-to-br from-charcoal-mid to-[#1e1416] text-center shadow-2xl overflow-hidden">
+            
+            {/* Visual background sparkles */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-gold/15 rounded-full blur-2xl" />
+            <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-rose-gold/10 rounded-full blur-xl" />
+
+            <button
+              onClick={() => setMatchAlert(null)}
+              className="absolute top-4 right-4 p-2 rounded-full border border-rose-gold/10 hover:border-rose-gold/30 hover:bg-rose-gold/5 text-neutral-400 hover:text-white transition-all cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="w-16 h-16 rounded-full border border-rose-gold bg-rose-gold/10 text-rose-gold flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-8 h-8 animate-pulse" />
+            </div>
+
+            <span className="text-[10px] uppercase font-bold text-rose-gold bg-rose-gold/10 border border-rose-gold/30 px-3 py-1 rounded-full tracking-widest">
+              Instant Perfect Match Found!
+            </span>
+
+            <h3 className="font-display text-3xl md:text-4xl font-semibold text-white mt-4 mb-2">
+              It's a Section match!
+            </h3>
+            
+            <p className="text-neutral-400 font-light text-xs md:text-sm max-w-md mx-auto leading-relaxed mb-8">
+              A student is currently looking for the exact opposite trade! You are in <span className="text-white font-medium">{matchAlert.yourReq.currentSection}</span> wanting <span className="text-rose-gold font-medium">{matchAlert.yourReq.desiredSection}</span>, and they are in <span className="text-rose-gold font-medium">{matchAlert.matchedReq.currentSection}</span> wanting <span className="text-white font-semibold">{matchAlert.matchedReq.desiredSection}</span>.
+            </p>
+
+            {/* Partner Details Block */}
+            <div className="p-5 rounded-2xl border border-rose-gold/10 bg-charcoal-dark/90 text-left mb-8">
+              <span className="text-[10px] text-neutral-500 uppercase font-mono tracking-wider">Your Matching Partner</span>
+              <h4 className="text-lg font-bold text-neutral-100 mt-1">{matchAlert.matchedReq.name}</h4>
+              <p className="text-xs text-neutral-400 font-mono">ID: {matchAlert.matchedReq.studentId}</p>
+              <p className="text-xs text-neutral-500 font-mono mt-0.5">{matchAlert.matchedReq.email}</p>
+              
+              <div className={`mt-4 pt-4 border-t border-rose-gold/5 ${matchAlert.matchedReq.facebook ? 'grid grid-cols-2 gap-4' : 'block'}`}>
+                <a
+                  href={`https://wa.me/${matchAlert.matchedReq.whatsapp.replace(/\+/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#25d366]/10 text-[#25d366] text-xs font-semibold hover:bg-[#25d366]/20 border border-[#25d366]/20 transition-all cursor-pointer w-full"
+                >
+                  <MessageSquare className="w-4 h-4" /> Chat on WhatsApp
+                </a>
+                {matchAlert.matchedReq.facebook && (
+                  <a
+                    href={getFacebookUrl(matchAlert.matchedReq.facebook)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#1877f2]/10 text-[#1877f2] text-xs font-semibold hover:bg-[#1877f2]/20 border border-[#1877f2]/20 transition-all cursor-pointer w-full"
+                  >
+                    <Facebook className="w-4 h-4" /> Facebook Profile
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* CTA action buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
+              <button
+                onClick={() => setMatchAlert(null)}
+                className="w-full sm:w-auto h-11 px-6 rounded-full bg-rose-gold hover:bg-dusty-pink text-white text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer"
+              >
+                Close and Continue
+              </button>
+              <button
+                onClick={() => {
+                  setMatchAlert(null);
+                  scrollRef(activeSwapsRef);
+                }}
+                className="w-full sm:w-auto h-11 px-6 rounded-full border border-rose-gold/30 hover:bg-rose-gold/5 text-rose-gold text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer"
+              >
+                View in Directory
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+    </div>
   );
 }
