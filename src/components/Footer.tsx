@@ -68,7 +68,7 @@ export default function Footer({
               <li>
                 <button
                   onClick={onSubmitRequestClick}
-                  className="text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                  className="text-neutral-400 hover:text-white transition-colors cursor-pointer text-left"
                 >
                   Find My Match
                 </button>
@@ -76,7 +76,7 @@ export default function Footer({
               <li>
                 <button
                   onClick={onActiveSwapsClick}
-                  className="text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                  className="text-neutral-400 hover:text-white transition-colors cursor-pointer text-left"
                 >
                   Section Grid Directory
                 </button>
@@ -84,7 +84,7 @@ export default function Footer({
               <li>
                 <button
                   onClick={onHowItWorksClick}
-                  className="text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                  className="text-neutral-400 hover:text-white transition-colors cursor-pointer text-left"
                 >
                   Swap Process Guide
                 </button>
@@ -92,7 +92,7 @@ export default function Footer({
               <li>
                 <button
                   onClick={onFaqClick}
-                  className="text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                  className="text-neutral-400 hover:text-white transition-colors cursor-pointer text-left"
                 >
                   Frequently Asked Questions
                 </button>
@@ -152,7 +152,7 @@ export default function Footer({
                 <Facebook className="w-3.5 h-3.5 text-neutral-500 hover:text-[#1877f2] transition-all" />
                 <a
                   href="https://www.facebook.com/nosaibmahmodadil"
-               
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors inline-flex items-center gap-1.5"
                 >
