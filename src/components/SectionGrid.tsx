@@ -2,6 +2,18 @@ import React, { useState, useMemo } from 'react';
 import { Search, ArrowRight, MessageSquare, Facebook, Filter, Sparkles, Check, RefreshCw, X, AlertCircle } from 'lucide-react';
 import { SwapRequest } from '../types';
 
+export const getFacebookUrl = (value: string | undefined): string => {
+  if (!value) return '';
+  const trimmed = value.trim();
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('facebook.com/') || trimmed.startsWith('www.facebook.com/')) {
+    return 'https://' + trimmed;
+  }
+  return 'https://facebook.com/' + trimmed;
+};
+
 interface SectionGridProps {
   requests: SwapRequest[];
 }
@@ -154,15 +166,17 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
                         </a>
-                        <a
-                          href={reqA.facebook}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all font-light text-xs shrink-0 flex items-center gap-1"
-                          title="Facebook Profile URL"
-                        >
-                          <Facebook className="w-3.5 h-3.5" /> Social
-                        </a>
+                        {reqA.facebook && (
+                          <a
+                            href={getFacebookUrl(reqA.facebook)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all font-light text-xs shrink-0 flex items-center gap-1"
+                            title="Facebook Profile Link"
+                          >
+                            <Facebook className="w-3.5 h-3.5" /> Social
+                          </a>
+                        )}
                       </div>
                     </div>
 
@@ -180,15 +194,17 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
                         </a>
-                        <a
-                          href={reqB.facebook}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all font-light text-xs shrink-0 flex items-center gap-1"
-                          title="Facebook Profile URL"
-                        >
-                          <Facebook className="w-3.5 h-3.5" /> Social
-                        </a>
+                        {reqB.facebook && (
+                          <a
+                            href={getFacebookUrl(reqB.facebook)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all font-light text-xs shrink-0 flex items-center gap-1"
+                            title="Facebook Profile Link"
+                          >
+                            <Facebook className="w-3.5 h-3.5" /> Social
+                          </a>
+                        )}
                       </div>
                     </div>
 
@@ -358,26 +374,28 @@ export default function SectionGrid({ requests }: SectionGridProps) {
                   </div>
 
                   {/* Active Contact CTAs */}
-                  <div className="grid grid-cols-2 gap-3 pt-3 border-t border-rose-gold/5">
+                  <div className={`pt-3 border-t border-rose-gold/5 ${req.facebook ? 'grid grid-cols-2 gap-3' : 'block'}`}>
                     <a
                       href={`https://wa.me/${req.whatsapp.replace(/\+/g, '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-9 items-center justify-center gap-1.5 px-3 rounded-xl bg-[#25d366]/10 text-[#25d366] text-xs font-semibold hover:bg-[#25d366]/20 border border-[#25d366]/20 transition-all cursor-pointer"
+                      className="inline-flex h-9 items-center justify-center gap-1.5 px-3 rounded-xl bg-[#25d366]/10 text-[#25d366] text-xs font-semibold hover:bg-[#25d366]/20 border border-[#25d366]/20 transition-all cursor-pointer w-full"
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
                       WhatsApp
                     </a>
                     
-                    <a
-                      href={req.facebook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex h-9 items-center justify-center gap-1.5 px-3 rounded-xl bg-[#1877f2]/10 text-[#1877f2] text-xs font-semibold hover:bg-[#1877f2]/20 border border-[#1877f2]/20 transition-all cursor-pointer"
-                    >
-                      <Facebook className="w-3.5 h-3.5" />
-                      Facebook
-                    </a>
+                    {req.facebook && (
+                      <a
+                        href={getFacebookUrl(req.facebook)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex h-9 items-center justify-center gap-1.5 px-3 rounded-xl bg-[#1877f2]/10 text-[#1877f2] text-xs font-semibold hover:bg-[#1877f2]/20 border border-[#1877f2]/20 transition-all cursor-pointer w-full"
+                      >
+                        <Facebook className="w-3.5 h-3.5" />
+                        Facebook
+                      </a>
+                    )}
                   </div>
 
                 </div>
