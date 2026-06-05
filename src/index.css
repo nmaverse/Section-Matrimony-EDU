@@ -113,3 +113,20 @@
   background: #c46e7a;
 }
 
+select.form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 48px;
+  cursor: pointer;
+  background-color: #131316;
+  color: #ede9e4;
+  padding-right: 2.5rem;
+}
+
+select.form-input option {
+  background-color: #131316;
+  color: #ede9e4;
+  padding: 8px;
+}
+
