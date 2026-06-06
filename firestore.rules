@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidSwapRequest(data) {
+      return data.keys().hasAll(['id', 'name', 'studentId', 'email', 'currentSection', 'desiredSection', 'whatsapp', 'facebook', 'createdAt', 'status'])
+        && data.keys().size() == 10
+        && data.id is string && data.id.size() <= 128
+        && data.name is string && data.name.size() <= 128
+        && data.studentId is string && data.studentId.size() <= 128
+        && data.email is string && data.email.size() <= 128
+        && data.currentSection is string && data.currentSection.size() <= 128
+        && data.desiredSection is string && data.desiredSection.size() <= 128
+        && data.whatsapp is string && data.whatsapp.size() <= 128
+        && data.facebook is string && data.facebook.size() <= 128
+        && data.createdAt is string && data.createdAt.size() <= 128
+        && data.status is string && (data.status == 'active' || data.status == 'matched' || data.status == 'completed');
+    }
+
+    match /requests/{requestId} {
+      allow read: if true;
+      allow create: if isValidId(requestId) && isValidSwapRequest(request.resource.data);
+      allow delete: if true;
+    }
+  }
+}

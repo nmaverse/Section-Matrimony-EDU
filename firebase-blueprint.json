@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "SwapRequest": {
+      "title": "SwapRequest",
+      "description": "A representation of a student section swap request",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the swap request"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the student"
+        },
+        "studentId": {
+          "type": "string",
+          "description": "Student academic ID"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the student"
+        },
+        "currentSection": {
+          "type": "string",
+          "description": "The current section the student is in"
+        },
+        "desiredSection": {
+          "type": "string",
+          "description": "The desired section the student wants to swap to"
+        },
+        "whatsapp": {
+          "type": "string",
+          "description": "WhatsApp contact phone number"
+        },
+        "facebook": {
+          "type": "string",
+          "description": "Facebook profile link or username"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "The ISO timestamp when the request was submitted"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "matched",
+            "completed"
+          ],
+          "description": "Current status of the swap"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "studentId",
+        "email",
+        "currentSection",
+        "desiredSection",
+        "whatsapp",
+        "createdAt",
+        "status"
+      ]
+    }
+  },
+  "firestore": {
+    "/requests/{requestId}": {
+      "schema": "SwapRequest",
+      "description": "Collection of all student section swap requests"
+    }
+  }
+}
