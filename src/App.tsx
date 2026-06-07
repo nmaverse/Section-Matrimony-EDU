@@ -31,19 +31,6 @@ export default function App() {
   // Real-time synchronization layer with Cloud Firestore
   useEffect(() => {
     const unsub = onSnapshot(collection(db, 'requests'), async (snapshot) => {
-      if (snapshot.empty) {
-        // Automatically preseed with default requests if database is fresh and completely empty
-        try {
-          const batch = writeBatch(db);
-          INITIAL_SWAP_REQUESTS.forEach((req) => {
-            batch.set(doc(db, 'requests', req.id), req);
-          });
-          await batch.commit();
-        } catch (e) {
-          console.error("Failed to automatically preseed Firestore:", e);
-        }
-        return;
-      }
       const docsData: SwapRequest[] = [];
       snapshot.forEach((doc) => {
         docsData.push(doc.data() as SwapRequest);
