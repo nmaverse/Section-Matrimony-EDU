@@ -11,7 +11,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801712345678',
     facebook: 'https://facebook.com/samiul.islam',
     createdAt: '2026-06-03T10:30:00Z',
-    status: 'active'
+    status: 'active',
+    department: 'CSE',
+    semester: '4'
   },
   {
     id: 'req_2',
@@ -23,7 +25,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801812345678',
     facebook: 'https://facebook.com/nafisa.tasnim.edu',
     createdAt: '2026-06-03T14:15:00Z',
-    status: 'active' // Notice how Semiul and Nafisa are a PERFECT reciprocal swap! (Sec 1 -> 3 vs Sec 3 -> 1)
+    status: 'active', // Notice how Semiul and Nafisa are a PERFECT reciprocal swap! (Sec 1 -> 3 vs Sec 3 -> 1)
+    department: 'CSE',
+    semester: '4'
   },
   {
     id: 'req_3',
@@ -35,7 +39,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801912345678',
     facebook: 'https://facebook.com/arif.chy.9',
     createdAt: '2026-06-02T09:00:00Z',
-    status: 'active'
+    status: 'active',
+    department: 'CSE',
+    semester: '2'
   },
   {
     id: 'req_4',
@@ -47,7 +53,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801512345678',
     facebook: 'https://facebook.com/zahed.cse',
     createdAt: '2026-06-04T08:20:00Z',
-    status: 'active' // Perfect match with Arif Chowdhury!
+    status: 'active', // Perfect match with Arif Chowdhury!
+    department: 'CSE',
+    semester: '2'
   },
   {
     id: 'req_5',
@@ -59,7 +67,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801312345678',
     facebook: 'https://facebook.com/fariha.rahman.cse',
     createdAt: '2026-06-04T11:45:00Z',
-    status: 'active'
+    status: 'active',
+    department: 'EEE',
+    semester: '3'
   },
   {
     id: 'req_6',
@@ -71,7 +81,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801700112233',
     facebook: 'https://facebook.com/tanvir.ahmed.edu',
     createdAt: '2026-06-04T12:05:00Z',
-    status: 'active' // Perfect match with Fariha!
+    status: 'active', // Perfect match with Fariha!
+    department: 'EEE',
+    semester: '3'
   },
   {
     id: 'req_7',
@@ -83,7 +95,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801644332211',
     facebook: 'https://facebook.com/mehedi.hasan.cse',
     createdAt: '2026-06-01T15:30:00Z',
-    status: 'active'
+    status: 'active',
+    department: 'CSE',
+    semester: '5'
   },
   {
     id: 'req_8',
@@ -95,7 +109,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801833445566',
     facebook: 'https://facebook.com/sadia.sultana.edu',
     createdAt: '2026-06-04T05:10:00Z',
-    status: 'active' // Perfect match with Mehedi!
+    status: 'active', // Perfect match with Mehedi!
+    department: 'CSE',
+    semester: '5'
   },
   {
     id: 'req_9',
@@ -107,7 +123,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801555667788',
     facebook: 'https://facebook.com/kamrul.hasan.cse',
     createdAt: '2026-06-04T16:50:00Z',
-    status: 'active'
+    status: 'active',
+    department: 'BBA',
+    semester: '8'
   },
   {
     id: 'req_10',
@@ -119,7 +137,9 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801999887766',
     facebook: 'https://facebook.com/adrita.sen.3',
     createdAt: '2026-06-04T17:15:00Z',
-    status: 'active'
+    status: 'active',
+    department: 'ENGLISH',
+    semester: '1'
   },
   {
     id: 'req_11',
@@ -131,29 +151,31 @@ export const INITIAL_SWAP_REQUESTS: SwapRequest[] = [
     whatsapp: '+8801777223344',
     facebook: 'https://facebook.com/tahsin.kabir.cse',
     createdAt: '2026-06-04T18:22:00Z',
-    status: 'active'
+    status: 'active',
+    department: 'CSE',
+    semester: '11'
   }
 ];
 
 export const INITIAL_FAQ: FAQItem[] = [
   {
     question: 'How does Section Matrimony work?',
-    answer: 'Section Matrimony acts as a matchmaker for course sections. You submit a request identifying your current section and your desired section. The platform analyzes submissions across the East Delta University CSE Department to find "reciprocal matches" — for instance, if you are in Section 01 and want Section 03, and another student in Section 03 is looking for Section 01. When a match is found, their contact channels (WhatsApp or Facebook) are displayed so you can instantly coordinate the final official swap.'
+    answer: 'Section Matrimony acts as a matchmaker for course sections. You submit a request identifying your department, semester, current section, and desired section. The platform analyzes submissions across all East Delta University departments to find "reciprocal matches" — for instance, if you are in CSE Section 01 and want Section 03, and another student in CSE Section 03 is looking for Section 01. When a match is found, your contact channels (WhatsApp or Facebook) are displayed so you can instantly coordinate the final official swap.'
   },
   {
     question: 'Is my student and contact information safe on this platform?',
-    answer: 'Your privacy is highly valued. We only require student email configuration to verify you are a genuine EDU CSE department student. Your WhatsApp and Facebook profiles are shown on the platform exclusively to let potential match partners find and message you to complete the swap. These links are never shared with search engines or external third parties.'
+    answer: 'Your privacy is highly valued. We only require student email configuration to verify you are a genuine EDU student. Your WhatsApp and Facebook profiles are shown on the platform exclusively to let potential match partners find and message you to complete the swap. These links are never shared with search engines or external third parties.'
   },
   {
     question: 'Why does the form restrict same-section submissions?',
-    answer: 'You cannot select the same section for both your current section and desired section. The purpose of Section Matrimony is to facilitate swaps between different class timings. If they were the same, there would be no transfer needed.'
+    answer: 'You cannot select the same section for both your current section and desired section within the same department. The purpose of Section Matrimony is to facilitate swaps between different class timings. If they were the same, there would be no transfer needed.'
   },
   {
     question: 'Is this an official platform managed by East Delta University?',
-    answer: 'No, Section Matrimony is an independent peer-to-peer helper platform created by and for the students of the East Delta University CSE Department. It helps you locate match partners quickly. However, the final official section changes must still be completed through the EDU student portal or directly via the department coordinator according to academic advisory rules.'
+    answer: 'No, Section Matrimony is an independent peer-to-peer helper platform created by and for the students of East Delta University. It helps you locate match partners quickly. However, the final official section changes must still be completed through the EDU student portal or directly via your department advisor/coordinator according to academic advisory rules.'
   },
   {
     question: 'What should I do once a reciprocal match is found?',
-    answer: 'Once you spot a swap partner in the section grid or reciprocal matches board, click their WhatsApp or Facebook link to start a discussion. Verify that their academic courses and registration statuses align, then coordinate with your department advisor or access the EDU Portal together during the official drop/add or section changing week to complete the transaction.'
+    answer: 'Once you spot a swap partner in the section grid or reciprocal matches board, click their WhatsApp or Facebook link to start a discussion. Verify that your academic courses and registration statuses align, then coordinate with your department advisor or access the EDU Portal together during the official drop/add or section changing week to complete the transaction.'
   }
 ];
