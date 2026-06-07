@@ -11,6 +11,8 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
   const [name, setName] = useState('');
   const [studentId, setStudentId] = useState('');
   const [email, setEmail] = useState('');
+  const [department, setDepartment] = useState('');
+  const [semester, setSemester] = useState('');
   const [currentSection, setCurrentSection] = useState('');
   const [desiredSection, setDesiredSection] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
@@ -20,6 +22,9 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const departmentsList = ['CSE', 'EEE', 'ETE', 'ENGLISH', 'ECONOMICS', 'BBA', 'BSBA'];
+  const semestersList = Array.from({ length: 12 }, (_, i) => String(i + 1));
 
   const sectionsList = Array.from({ length: 10 }, (_, i) => {
     const num = i + 1;
@@ -34,6 +39,8 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
     if (!name.trim()) return setErrorMsg('Student Name is required.');
     if (!studentId.trim()) return setErrorMsg('Student ID is required.');
     if (!email.trim()) return setErrorMsg('University Email is required.');
+    if (!department) return setErrorMsg('Please choose your Department.');
+    if (!semester) return setErrorMsg('Please choose your Semester.');
     if (!currentSection) return setErrorMsg('Please choose your Current Section.');
     if (!desiredSection) return setErrorMsg('Please choose your Desired Section.');
     if (!whatsapp.trim()) return setErrorMsg('WhatsApp Number is required to coordinate.');
@@ -56,6 +63,8 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
         name,
         studentId,
         email,
+        department,
+        semester,
         currentSection,
         desiredSection,
         whatsapp,
@@ -69,6 +78,8 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
       setName('');
       setStudentId('');
       setEmail('');
+      setDepartment('');
+      setSemester('');
       setCurrentSection('');
       setDesiredSection('');
       setWhatsapp('');
@@ -187,6 +198,58 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                   <p className="text-[11px] text-neutral-500 mt-1.5 font-light">
                     Your official university domain email address is safe.
                   </p>
+                </div>
+
+                {/* Department Dropdown */}
+                <div>
+                  <label htmlFor="student-department" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                    Department <span className="text-rose-gold">*</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="student-department"
+                      required
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                      className="form-input bg-charcoal-dark"
+                    >
+                      <option value="">Choose Department</option>
+                      {departmentsList.map((dept) => (
+                        <option key={dept} value={dept}>
+                          {dept}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400">
+                      ▼
+                    </div>
+                  </div>
+                </div>
+
+                {/* Semester Dropdown */}
+                <div>
+                  <label htmlFor="student-semester" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                    Semester <span className="text-rose-gold">*</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="student-semester"
+                      required
+                      value={semester}
+                      onChange={(e) => setSemester(e.target.value)}
+                      className="form-input bg-charcoal-dark"
+                    >
+                      <option value="">Choose Semester</option>
+                      {semestersList.map((sem) => (
+                        <option key={`sem-${sem}`} value={sem}>
+                          Semester {sem}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400">
+                      ▼
+                    </div>
+                  </div>
                 </div>
 
                 {/* Current Section Dropdown */}
