@@ -37,6 +37,21 @@
   transition: all 0.25s ease-in-out !important;
 }
 
+/* Fix dropdown menu and option background colors for premium visual styling */
+select.form-input {
+  background-color: #141418 !important;
+}
+
+select {
+  background-color: #141418 !important;
+  color: white !important;
+}
+
+option {
+  background-color: #141418 !important;
+  color: white !important;
+}
+
 .form-input:focus {
   outline: none !important;
   border-color: #c46e7a !important;
