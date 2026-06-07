@@ -122,7 +122,7 @@ export default function SectionGrid({
   }, [requests, selectedSection, searchQuery, directionFilter, deptFilter, semesterFilter]);
 
   return (
-    <section id="section-grid-section" className="relative py-24 bg-[#0c0c0e] overflow-hidden border-t border-rose-gold/10">
+    <section id="section-grid-section" className="relative py-24 bg-charcoal-dark overflow-hidden border-t border-rose-gold/10">
       
       <div className="glow-spot w-[35vw] h-[35vw] top-[10%] right-[10%] bg-rose-gold/10" />
       <div className="glow-spot w-[30vw] h-[30vw] bottom-[20%] left-[5%] bg-dusty-pink/8" />
@@ -134,24 +134,24 @@ export default function SectionGrid({
           <span className="text-xs font-semibold uppercase tracking-[0.25em] text-rose-gold block mb-3">
             Real-time Exchange Index
           </span>
-          <h2 className="font-display text-4xl md:text-5xl font-semibold text-white mb-4">
+          <h2 className="font-display text-4xl md:text-5xl font-semibold text-neutral-900 dark:text-white mb-4">
             Browse Sections & Swaps
           </h2>
           <div className="h-[2px] w-12 bg-rose-gold mx-auto mb-4" />
-          <p className="text-sm md:text-base text-neutral-400 font-light max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 font-light max-w-2xl mx-auto">
             Select a specific section card from the grid to examine outbound or inbound swap requests, or view direct matchmaking partners instantly.
           </p>
         </div>
 
         {/* 1. Reciprocal Matches Sparkle Bar - Always display if any exist! */}
         {perfectMatches.length > 0 && (
-          <div className="mb-14 p-6 md:p-8 rounded-3xl border border-rose-gold/30 bg-gradient-to-r from-rose-gold/5 via-charcoal-mid to-[#161113] relative overflow-hidden shadow-xl">
+          <div className="mb-14 p-6 md:p-8 rounded-3xl border border-rose-gold/30 bg-gradient-to-r from-rose-gold/5 via-charcoal-mid to-[#161113] dark:to-[#161113] relative overflow-hidden shadow-xl">
             {/* Ambient gold glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-rose-gold/15 rounded-full blur-2xl" />
             
             <div className="flex items-center gap-2 mb-6">
               <Sparkles className="w-5 h-5 text-rose-gold animate-bounce" />
-              <h3 className="font-display text-2xl font-semibold text-white">
+              <h3 className="font-display text-2xl font-semibold text-neutral-900 dark:text-white">
                 Perfect Reciprocal Matches Found ({perfectMatches.length})
               </h3>
               <span className="text-[10px] uppercase font-bold text-rose-gold bg-rose-gold/10 border border-rose-gold/30 px-2.5 py-0.5 rounded-full tracking-wider animate-pulse ml-2">
@@ -161,7 +161,7 @@ export default function SectionGrid({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {perfectMatches.map(({ reqA, reqB }, idx) => (
-                <div key={`match-${idx}`} className="p-5 rounded-2xl border border-white/5 bg-charcoal-dark/75 relative">
+                <div key={`match-${idx}`} className="p-5 rounded-2xl border border-rose-gold/15 bg-charcoal-dark/75 relative">
                   
                   {/* Perfect Match Header */}
                   <div className="flex justify-between items-center text-xs text-rose-gold mb-4 border-b border-rose-gold/10 pb-3">
@@ -178,8 +178,8 @@ export default function SectionGrid({
                     
                     {/* Student A info */}
                     <div className="pr-2">
-                      <h4 className="text-sm font-semibold text-neutral-100 truncate">{reqA.name}</h4>
-                      <p className="text-[11px] text-neutral-500 font-mono mb-2">{reqA.studentId} • {reqA.department} (Sem {reqA.semester})</p>
+                      <h4 className="text-sm font-semibold text-neutral-800 dark:text-neutral-100 truncate">{reqA.name}</h4>
+                      <p className="text-[11px] text-neutral-600 dark:text-neutral-500 font-mono mb-2">{reqA.studentId} • {reqA.department} (Sem {reqA.semester})</p>
                       <div className="flex gap-2">
                         <a
                           href={`https://wa.me/${reqA.whatsapp.replace(/\+/g, '')}`}
@@ -206,8 +206,8 @@ export default function SectionGrid({
 
                     {/* Student B info */}
                     <div className="pl-4">
-                      <h4 className="text-sm font-semibold text-neutral-100 truncate">{reqB.name}</h4>
-                      <p className="text-[11px] text-neutral-500 font-mono mb-2">{reqB.studentId} • {reqB.department} (Sem {reqB.semester})</p>
+                      <h4 className="text-sm font-semibold text-neutral-800 dark:text-neutral-100 truncate">{reqB.name}</h4>
+                      <p className="text-[11px] text-neutral-600 dark:text-neutral-500 font-mono mb-2">{reqB.studentId} • {reqB.department} (Sem {reqB.semester})</p>
                       <div className="flex gap-2">
                         <a
                           href={`https://wa.me/${reqB.whatsapp.replace(/\+/g, '')}`}
@@ -244,7 +244,7 @@ export default function SectionGrid({
         <div className="mb-12">
           
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <h3 className="font-display text-2xl font-semibold text-white flex items-center gap-2">
+            <h3 className="font-display text-2xl font-semibold text-neutral-900 dark:text-white flex items-center gap-2">
               <span>Select Section to View Filings</span>
               {selectedSection && (
                 <button
@@ -258,12 +258,12 @@ export default function SectionGrid({
 
             {/* Quick Semester Filter for the Section grid */}
             <div className="flex items-center gap-2.5 self-start md:self-auto">
-              <span className="text-xs text-neutral-400 font-medium font-mono uppercase tracking-wider">Semester:</span>
+              <span className="text-xs text-neutral-600 dark:text-neutral-400 font-medium font-mono uppercase tracking-wider">Semester:</span>
               <div className="relative">
                 <select
                   value={semesterFilter}
                   onChange={(e) => setSemesterFilter(e.target.value)}
-                  className="h-8.5 px-3 pr-8 rounded-xl border border-neutral-800 bg-[#141418] text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light min-w-[130px] transition-all"
+                  className="h-8.5 px-3 pr-8 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-charcoal-mid text-neutral-900 dark:text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light min-w-[130px] transition-all"
                 >
                   <option value="all">All Semesters</option>
                   {semestersList.map((sem) => (
@@ -280,8 +280,8 @@ export default function SectionGrid({
           </div>
 
           {/* Dynamic Department Tabs */}
-          <div className="mb-8 border-b border-white/5 pb-5">
-            <div className="text-[10px] uppercase font-bold text-neutral-400 tracking-widest mb-3 font-mono">
+          <div className="mb-8 border-b border-rose-gold/10 pb-5">
+            <div className="text-[10px] uppercase font-bold text-neutral-600 dark:text-neutral-400 tracking-widest mb-3 font-mono">
               Filter by Department
             </div>
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
@@ -290,7 +290,7 @@ export default function SectionGrid({
                 className={`h-9 px-4 text-xs font-semibold rounded-full duration-250 cursor-pointer border whitespace-nowrap transition-all ${
                   deptFilter === 'all'
                     ? 'bg-rose-gold text-black border-rose-gold shadow-lg shadow-rose-gold/10 hover:opacity-90'
-                    : 'bg-[#141418] border-neutral-800/80 text-neutral-400 hover:text-white hover:border-neutral-700'
+                    : 'bg-charcoal-mid border-neutral-200 dark:border-neutral-800/80 text-neutral-600 dark:text-neutral-400 hover:text-rose-gold hover:border-neutral-300 dark:hover:border-neutral-700'
                 }`}
               >
                 All Departments
@@ -302,7 +302,7 @@ export default function SectionGrid({
                   className={`h-9 px-4 text-xs font-semibold rounded-full duration-250 cursor-pointer border whitespace-nowrap transition-all ${
                     deptFilter === dept
                       ? 'bg-rose-gold text-black border-rose-gold shadow-lg shadow-rose-gold/10 hover:opacity-90'
-                      : 'bg-[#141418] border-neutral-800/80 text-neutral-400 hover:text-white hover:border-neutral-700'
+                      : 'bg-charcoal-mid border-neutral-200 dark:border-neutral-800/80 text-neutral-600 dark:text-neutral-400 hover:text-rose-gold hover:border-neutral-300 dark:hover:border-neutral-700'
                   }`}
                 >
                   {dept}
@@ -321,7 +321,7 @@ export default function SectionGrid({
                   className={`p-5 rounded-2xl text-left border transition-all duration-300 relative group cursor-pointer ${
                     isSelected
                       ? 'border-rose-gold bg-rose-gold/10 shadow-lg shadow-rose-gold/5 scale-[1.03]'
-                      : 'border-rose-gold/15 bg-[#141418]/60 hover:bg-charcoal-light/10 hover:border-rose-gold/30'
+                      : 'border-rose-gold/15 bg-charcoal-mid/60 hover:bg-charcoal-light/20 hover:border-rose-gold/30'
                   }`}
                 >
                   {/* Decorative corner indicator */}
@@ -333,21 +333,21 @@ export default function SectionGrid({
                     {deptFilter === 'all' ? 'EDU ALL' : `EDU ${deptFilter}`}
                   </span>
                   
-                  <span className="font-display text-xl font-bold text-white block mb-4 group-hover:text-rose-gold transition-colors duration-200">
+                  <span className="font-display text-xl font-bold text-neutral-900 dark:text-white block mb-4 group-hover:text-rose-gold transition-colors duration-200">
                     {sectionName}
                   </span>
 
                   {/* Outbound vs Inbound sub-stats */}
                   <div className="space-y-1.5 text-xs">
-                    <div className="flex justify-between text-neutral-400">
+                    <div className="flex justify-between text-neutral-600 dark:text-neutral-400">
                       <span>Outgoing:</span>
-                      <span className={`font-mono font-semibold ${outgoingCount > 0 ? 'text-white' : 'text-neutral-600'}`}>
+                      <span className={`font-mono font-semibold ${outgoingCount > 0 ? 'text-neutral-900 dark:text-white' : 'text-neutral-400 dark:text-neutral-600'}`}>
                         {outgoingCount}
                       </span>
                     </div>
-                    <div className="flex justify-between text-neutral-400">
+                    <div className="flex justify-between text-neutral-600 dark:text-neutral-400">
                       <span>Incoming:</span>
-                      <span className={`font-mono font-semibold ${incomingCount > 0 ? 'text-rose-gold' : 'text-neutral-600'}`}>
+                      <span className={`font-mono font-semibold ${incomingCount > 0 ? 'text-rose-gold' : 'text-neutral-400 dark:text-neutral-600'}`}>
                         {incomingCount}
                       </span>
                     </div>
@@ -366,7 +366,7 @@ export default function SectionGrid({
             
             <div className="flex flex-wrap items-center gap-3">
               <Filter className="w-4 h-4 text-rose-gold" />
-              <h4 className="font-display text-xl font-semibold text-white">
+              <h4 className="font-display text-xl font-semibold text-neutral-900 dark:text-white">
                 {selectedSection 
                   ? `${selectedSection} Requests` 
                   : deptFilter !== 'all' 
@@ -380,14 +380,14 @@ export default function SectionGrid({
             <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4 w-full lg:w-auto">
               
               {/* Query Search */}
-              <div className="relative w-full sm:w-60">
+               <div className="relative w-full sm:w-60">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
                 <input
                   type="text"
                   placeholder="Search ID, Code, Name..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full h-10 pl-10 pr-4 rounded-xl border border-neutral-800 bg-[#0c0c0e] text-white text-xs placeholder-neutral-500 focus:outline-none focus:border-rose-gold/50 transition-all font-light"
+                  className="w-full h-10 pl-10 pr-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-charcoal-dark text-neutral-900 dark:text-white text-xs placeholder-neutral-500 focus:outline-none focus:border-rose-gold/50 transition-all font-light"
                 />
               </div>
 
@@ -396,7 +396,7 @@ export default function SectionGrid({
                 <select
                   value={deptFilter}
                   onChange={(e) => setDeptFilter(e.target.value)}
-                  className="w-full sm:border sm:border-neutral-800 h-10 px-3 pr-8 rounded-xl border border-neutral-800 bg-[#0c0c0e] text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
+                  className="w-full sm:border sm:border-neutral-200 dark:sm:border-neutral-800 h-10 px-3 pr-8 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-charcoal-dark text-neutral-900 dark:text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
                 >
                   <option value="all">All Departments</option>
                   {departmentsList.map((dept) => (
@@ -415,7 +415,7 @@ export default function SectionGrid({
                 <select
                   value={semesterFilter}
                   onChange={(e) => setSemesterFilter(e.target.value)}
-                  className="w-full sm:border sm:border-neutral-800 h-10 px-3 pr-8 rounded-xl border border-neutral-800 bg-[#0c0c0e] text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
+                  className="w-full sm:border sm:border-neutral-200 dark:sm:border-neutral-800 h-10 px-3 pr-8 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-charcoal-dark text-neutral-900 dark:text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
                 >
                   <option value="all">All Semesters</option>
                   {semestersList.map((sem) => (
@@ -435,7 +435,7 @@ export default function SectionGrid({
                   <select
                     value={directionFilter}
                     onChange={(e) => setDirectionFilter(e.target.value as any)}
-                    className="w-full sm:border sm:border-neutral-800 h-10 px-3 pr-8 rounded-xl border border-neutral-800 bg-[#0c0c0e] text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
+                    className="w-full sm:border sm:border-neutral-200 dark:sm:border-neutral-800 h-10 px-3 pr-8 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-charcoal-dark text-neutral-900 dark:text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
                   >
                     <option value="all">Outgoing & Incoming</option>
                     <option value="outgoing">Outgoing only</option>
@@ -453,8 +453,8 @@ export default function SectionGrid({
           {/* Directory Listings */}
           {filteredRequests.length === 0 ? (
             <div className="py-20 text-center flex flex-col items-center justify-center">
-              <AlertCircle className="w-10 h-10 text-neutral-600 mb-3" />
-              <p className="text-sm text-neutral-400 font-light mb-2">No active swap listings match your filters.</p>
+              <AlertCircle className="w-10 h-10 text-neutral-400 mb-3" />
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 font-light mb-2">No active swap listings match your filters.</p>
               <p className="text-xs text-neutral-500 font-light">Be the first to post a swap with Section {selectedSection || '01'}!</p>
             </div>
           ) : (
@@ -462,13 +462,13 @@ export default function SectionGrid({
               {filteredRequests.map((req) => (
                 <div
                   key={req.id}
-                  className="p-5 rounded-2xl border border-rose-gold/10 bg-[#0c0c0e]/80 hover:border-rose-gold/20 transition-all duration-300 relative group"
+                  className="p-5 rounded-2xl border border-rose-gold/10 bg-charcoal-dark/80 hover:border-rose-gold/20 transition-all duration-300 relative group"
                 >
                   {/* Swap Visual Indicator */}
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <div className="flex flex-col">
                       <span className="text-[10px] text-neutral-500 uppercase tracking-wider font-mono">Current</span>
-                      <span className="text-xs font-semibold text-neutral-300">{req.currentSection}</span>
+                      <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-300">{req.currentSection}</span>
                     </div>
 
                     <div className="flex items-center justify-center p-2 rounded-full bg-rose-gold/10 text-rose-gold border border-rose-gold/10 shrink-0">
@@ -487,12 +487,12 @@ export default function SectionGrid({
                       <span className="text-[10px] text-rose-gold bg-rose-gold/5 border border-rose-gold/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold font-mono">
                         {req.department || 'CSE'}
                       </span>
-                      <span className="text-[10px] text-neutral-300 bg-neutral-900 border border-neutral-800 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-mono">
+                      <span className="text-[10px] text-neutral-700 dark:text-neutral-300 bg-charcoal-mid border border-neutral-200 dark:border-neutral-800 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-mono">
                         Semester {req.semester || 'N/A'}
                       </span>
                     </div>
-                    <h5 className="text-base font-semibold text-white mt-2 truncate">{req.name}</h5>
-                    <p className="text-xs text-neutral-400 font-light font-mono mt-0.5">{req.studentId}</p>
+                    <h5 className="text-base font-semibold text-neutral-900 dark:text-white mt-2 truncate">{req.name}</h5>
+                    <p className="text-xs text-neutral-600 dark:text-neutral-400 font-light font-mono mt-0.5">{req.studentId}</p>
                     <p className="text-[11px] text-neutral-500 font-mono mt-0.5 max-w-full truncate">{req.email}</p>
                   </div>
 
