@@ -242,19 +242,76 @@ export default function SectionGrid({
 
         {/* 2. Interactive Section Grid (Showing all 10 sections) */}
         <div className="mb-12">
-          <h3 className="font-display text-2xl font-semibold text-white mb-6 flex items-center gap-2">
-            <span>Select Section to View Filings</span>
-            {selectedSection && (
-              <button
-                onClick={() => setSelectedSection(null)}
-                className="text-xs font-semibold px-3 py-1 bg-rose-gold/10 text-rose-gold border border-rose-gold/25 rounded-full hover:bg-rose-gold/20 cursor-pointer flex items-center gap-1.5 transition-all"
-              >
-                Clear Selection <X className="w-3 h-3" />
-              </button>
-            )}
-          </h3>
+          
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <h3 className="font-display text-2xl font-semibold text-white flex items-center gap-2">
+              <span>Select Section to View Filings</span>
+              {selectedSection && (
+                <button
+                  onClick={() => setSelectedSection(null)}
+                  className="text-xs font-semibold px-3 py-1 bg-rose-gold/10 text-rose-gold border border-rose-gold/25 rounded-full hover:bg-rose-gold/20 cursor-pointer flex items-center gap-1.5 transition-all animate-fade-in"
+                >
+                  Clear Selection <X className="w-3 h-3" />
+                </button>
+              )}
+            </h3>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {/* Quick Semester Filter for the Section grid */}
+            <div className="flex items-center gap-2.5 self-start md:self-auto">
+              <span className="text-xs text-neutral-400 font-medium font-mono uppercase tracking-wider">Semester:</span>
+              <div className="relative">
+                <select
+                  value={semesterFilter}
+                  onChange={(e) => setSemesterFilter(e.target.value)}
+                  className="h-8.5 px-3 pr-8 rounded-xl border border-neutral-800 bg-[#141418] text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light min-w-[130px] transition-all"
+                >
+                  <option value="all">All Semesters</option>
+                  {semestersList.map((sem) => (
+                    <option key={`grid-sem-${sem}`} value={sem}>
+                      Semester {sem}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500 text-[8px]">
+                  ▼
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Dynamic Department Tabs */}
+          <div className="mb-8 border-b border-white/5 pb-5">
+            <div className="text-[10px] uppercase font-bold text-neutral-400 tracking-widest mb-3 font-mono">
+              Filter by Department
+            </div>
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+              <button
+                onClick={() => setDeptFilter('all')}
+                className={`h-9 px-4 text-xs font-semibold rounded-full duration-250 cursor-pointer border whitespace-nowrap transition-all ${
+                  deptFilter === 'all'
+                    ? 'bg-rose-gold text-black border-rose-gold shadow-lg shadow-rose-gold/10 hover:opacity-90'
+                    : 'bg-[#141418] border-neutral-800/80 text-neutral-400 hover:text-white hover:border-neutral-700'
+                }`}
+              >
+                All Departments
+              </button>
+              {departmentsList.map((dept) => (
+                <button
+                  key={`tab-${dept}`}
+                  onClick={() => setDeptFilter(dept)}
+                  className={`h-9 px-4 text-xs font-semibold rounded-full duration-250 cursor-pointer border whitespace-nowrap transition-all ${
+                    deptFilter === dept
+                      ? 'bg-rose-gold text-black border-rose-gold shadow-lg shadow-rose-gold/10 hover:opacity-90'
+                      : 'bg-[#141418] border-neutral-800/80 text-neutral-400 hover:text-white hover:border-neutral-700'
+                  }`}
+                >
+                  {dept}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 animate-fade-in">
             {sectionStats.map(({ sectionName, outgoingCount, incomingCount }) => {
               const isSelected = selectedSection === sectionName;
               return (
@@ -264,7 +321,7 @@ export default function SectionGrid({
                   className={`p-5 rounded-2xl text-left border transition-all duration-300 relative group cursor-pointer ${
                     isSelected
                       ? 'border-rose-gold bg-rose-gold/10 shadow-lg shadow-rose-gold/5 scale-[1.03]'
-                      : 'border-rose-gold/15 bg-[#141418]/60 hover:bg-charcoal-light/95 hover:border-rose-gold/30'
+                      : 'border-rose-gold/15 bg-[#141418]/60 hover:bg-charcoal-light/10 hover:border-rose-gold/30'
                   }`}
                 >
                   {/* Decorative corner indicator */}
@@ -272,8 +329,8 @@ export default function SectionGrid({
                     <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-rose-gold animate-ping" />
                   )}
 
-                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-mono font-medium block mb-1">
-                    EDU CSE
+                  <span className="text-[10px] uppercase tracking-wider text-rose-gold/80 font-mono font-medium block mb-1">
+                    {deptFilter === 'all' ? 'EDU ALL' : `EDU ${deptFilter}`}
                   </span>
                   
                   <span className="font-display text-xl font-bold text-white block mb-4 group-hover:text-rose-gold transition-colors duration-200">
