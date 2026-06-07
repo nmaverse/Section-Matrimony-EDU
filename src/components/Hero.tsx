@@ -22,7 +22,7 @@ export default function Hero({ onFindMatchClick, activeRequestsCount }: HeroProp
         {/* Subtle Brand Pill */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-rose-gold/20 bg-rose-gold/5 text-rose-gold text-xs font-semibold uppercase tracking-[0.2em] mb-8 animate-fade-in">
           <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-          East Delta University • CSE Department
+          East Delta University • All Departments
         </div>
 
         {/* Hero Headline (using elegant Cormorant font) */}
