@@ -12,8 +12,8 @@ service cloud.firestore {
     }
 
     function isValidSwapRequest(data) {
-      return data.keys().hasAll(['id', 'name', 'studentId', 'email', 'currentSection', 'desiredSection', 'whatsapp', 'facebook', 'createdAt', 'status'])
-        && data.keys().size() == 10
+      return data.keys().hasAll(['id', 'name', 'studentId', 'email', 'currentSection', 'desiredSection', 'whatsapp', 'facebook', 'createdAt', 'status', 'department', 'semester'])
+        && data.keys().size() == 12
         && data.id is string && data.id.size() <= 128
         && data.name is string && data.name.size() <= 128
         && data.studentId is string && data.studentId.size() <= 128
@@ -23,6 +23,8 @@ service cloud.firestore {
         && data.whatsapp is string && data.whatsapp.size() <= 128
         && data.facebook is string && data.facebook.size() <= 128
         && data.createdAt is string && data.createdAt.size() <= 128
+        && data.department is string && data.department.size() <= 128
+        && data.semester is string && data.semester.size() <= 128
         && data.status is string && (data.status == 'active' || data.status == 'matched' || data.status == 'completed');
     }
 
