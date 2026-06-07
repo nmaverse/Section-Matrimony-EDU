@@ -9,6 +9,8 @@ export interface SwapRequest {
   facebook: string;
   createdAt: string;
   status: 'active' | 'matched' | 'completed';
+  department: string; // 'CSE' | 'EEE' | 'ETE' | 'ENGLISH' | 'ECONOMICS' | 'BBA' | 'BSBA'
+  semester: string; // '1' to '12'
 }
 
 export interface SectionStat {
