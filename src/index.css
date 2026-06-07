@@ -6,18 +6,71 @@
   
   --color-rose-gold: #c46e7a;
   --color-dusty-pink: #df9ba5;
-  --color-charcoal-dark: #0c0c0e;
-  --color-charcoal-mid: #141418;
-  --color-charcoal-light: #1d1d23;
-  --color-charcoal-lighter: #2a2a32;
+  --color-charcoal-dark: var(--bg-dark);
+  --color-charcoal-mid: var(--bg-mid);
+  --color-charcoal-light: var(--bg-light);
+  --color-charcoal-lighter: var(--bg-lighter);
+}
+
+:root {
+  --bg-dark: #0c0c0e;
+  --bg-mid: #141418;
+  --bg-light: #1d1d23;
+  --bg-lighter: #2a2a32;
+  --text-main: #ffffff;
+  --text-muted: #9ca3af;
+  --border-subtle: rgba(196, 110, 122, 0.12);
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-color: #ffffff;
+}
+
+/* Automatic light theme based on browser preference (when not overridden manual class) */
+@media (prefers-color-scheme: light) {
+  html:not(.dark) {
+    --bg-dark: #faf9f6;
+    --bg-mid: #ffffff;
+    --bg-light: #f3eded;
+    --bg-lighter: #e8dedf;
+    --text-main: #141418;
+    --text-muted: #57534e;
+    --border-subtle: rgba(196, 110, 122, 0.22);
+    --input-bg: rgba(0, 0, 0, 0.03);
+    --input-color: #0c0c0e;
+  }
+}
+
+/* Manual Overrides when html element has 'light' or 'dark' class */
+html.light {
+  --bg-dark: #faf9f6;
+  --bg-mid: #ffffff;
+  --bg-light: #f3eded;
+  --bg-lighter: #e8dedf;
+  --text-main: #141418;
+  --text-muted: #57534e;
+  --border-subtle: rgba(196, 110, 122, 0.22);
+  --input-bg: rgba(0, 0, 0, 0.03);
+  --input-color: #0c0c0e;
+}
+
+html.dark {
+  --bg-dark: #0c0c0e;
+  --bg-mid: #141418;
+  --bg-light: #1d1d23;
+  --bg-lighter: #2a2a32;
+  --text-main: #ffffff;
+  --text-muted: #9ca3af;
+  --border-subtle: rgba(196, 110, 122, 0.12);
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-color: #ffffff;
 }
 
 @layer base {
   body {
     font-family: var(--font-sans);
     background-color: var(--color-charcoal-dark);
-    color: #ffffff;
+    color: var(--text-main);
     overflow-x: hidden;
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
   h1, h2, h3, h4, h5, h6, .font-serif-heading {
@@ -25,11 +78,53 @@
   }
 }
 
+/* Light Mode specific element colors with clean selectors */
+html.light .bg-charcoal-dark,
+html.light .bg-[#0c0c0e],
+html.light .bg-[#0a0a0c],
+html.light .bg-[#08080a] {
+  background-color: var(--bg-dark) !important;
+}
+
+html.light .bg-charcoal-mid,
+html.light .bg-[#141418] {
+  background-color: var(--bg-mid) !important;
+}
+
+html.light .bg-charcoal-light {
+  background-color: var(--bg-light) !important;
+}
+
+html.light .border-neutral-800 {
+  border-color: rgba(196, 110, 122, 0.18) !important;
+}
+
+html.light .border-neutral-900 {
+  border-color: rgba(196, 110, 122, 0.22) !important;
+}
+
+html.light .border-white\/5 {
+  border-color: rgba(196, 110, 122, 0.15) !important;
+}
+
+html.light .border-rose-gold\/10 {
+  border-color: rgba(196, 110, 122, 0.18) !important;
+}
+
+html.light .border-rose-gold\/15 {
+  border-color: rgba(196, 110, 122, 0.22) !important;
+}
+
+html.light select.bg-charcoal-dark {
+  background-color: rgb(245, 240, 241) !important;
+  color: #141418 !important;
+}
+
 /* Professional Polish Theme Specific Extracted Layouts & Styles */
 .form-input {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: var(--input-bg) !important;
   border: 1px solid rgba(196, 110, 122, 0.3) !important;
-  color: white !important;
+  color: var(--input-color) !important;
   padding: 12px 16px !important;
   border-radius: 6px !important;
   width: 100% !important;
@@ -39,17 +134,17 @@
 
 /* Fix dropdown menu and option background colors for premium visual styling */
 select.form-input {
-  background-color: #141418 !important;
+  background-color: var(--bg-mid) !important;
 }
 
 select {
-  background-color: #141418 !important;
-  color: white !important;
+  background-color: var(--bg-mid) !important;
+  color: var(--text-main) !important;
 }
 
 option {
-  background-color: #141418 !important;
-  color: white !important;
+  background-color: var(--bg-mid) !important;
+  color: var(--text-main) !important;
 }
 
 .form-input:focus {
@@ -118,10 +213,10 @@ option {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0c0c0e;
+  background: var(--bg-dark);
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a32;
+  background: var(--bg-lighter);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
