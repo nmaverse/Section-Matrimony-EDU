@@ -38,7 +38,7 @@ export default function Navbar({
                 SECTION <span className="text-rose-gold">MATRIMONY</span>
               </span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-rose-gold/60 font-medium">
-                EDU CSE Dept
+                East Delta University
               </span>
             </div>
           </div>
