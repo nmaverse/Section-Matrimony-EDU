@@ -24,6 +24,11 @@ export default function SectionGrid({
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [directionFilter, setDirectionFilter] = useState<'all' | 'outgoing' | 'incoming'>('all');
+  const [deptFilter, setDeptFilter] = useState<string>('all');
+  const [semesterFilter, setSemesterFilter] = useState<string>('all');
+
+  const departmentsList = ['CSE', 'EEE', 'ETE', 'ENGLISH', 'ECONOMICS', 'BBA', 'BSBA'];
+  const semestersList = Array.from({ length: 12 }, (_, i) => String(i + 1));
 
   const sectionsList = Array.from({ length: 10 }, (_, i) => {
     const num = i + 1;
@@ -33,18 +38,26 @@ export default function SectionGrid({
   // Calculate stats for each section
   const sectionStats = useMemo(() => {
     return sectionsList.map((sectionName) => {
-      const outgoingCount = requests.filter(r => r.currentSection === sectionName).length;
-      const incomingCount = requests.filter(r => r.desiredSection === sectionName).length;
+      let filteredForStats = requests;
+      if (deptFilter !== 'all') {
+        filteredForStats = filteredForStats.filter(r => r.department === deptFilter);
+      }
+      if (semesterFilter !== 'all') {
+        filteredForStats = filteredForStats.filter(r => r.semester === semesterFilter);
+      }
+
+      const outgoingCount = filteredForStats.filter(r => r.currentSection === sectionName).length;
+      const incomingCount = filteredForStats.filter(r => r.desiredSection === sectionName).length;
       return {
         sectionName,
         outgoingCount,
         incomingCount
       };
     });
-  }, [requests]);
+  }, [requests, deptFilter, semesterFilter]);
 
   // Find all reciprocal perfect matches!
-  // A perfect match is where Student A is (Curr: X, Des: Y) and Student B is (Curr: Y, Des: X)
+  // A perfect match is where Student A is (Curr: X, Des: Y) and Student B is (Curr: Y, Des: X) and they are in the same department!
   const perfectMatches = useMemo(() => {
     const matches: Array<{ reqA: SwapRequest; reqB: SwapRequest }> = [];
     const processed = new Set<string>();
@@ -58,6 +71,7 @@ export default function SectionGrid({
         if (processed.has(reqB.id)) continue;
 
         if (
+          reqA.department === reqB.department && // Swap matches must be of same department
           reqA.currentSection === reqB.desiredSection &&
           reqA.desiredSection === reqB.currentSection
         ) {
@@ -81,6 +95,12 @@ export default function SectionGrid({
         if (directionFilter === 'all' && req.currentSection !== selectedSection && req.desiredSection !== selectedSection) return false;
       }
 
+      // Department filter
+      if (deptFilter !== 'all' && req.department !== deptFilter) return false;
+
+      // Semester filter
+      if (semesterFilter !== 'all' && req.semester !== semesterFilter) return false;
+
       // Search query check (Name, Student ID, email, sections)
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
@@ -89,15 +109,17 @@ export default function SectionGrid({
         const matchesEmail = req.email.toLowerCase().includes(query);
         const matchesCurrent = req.currentSection.toLowerCase().includes(query);
         const matchesDesired = req.desiredSection.toLowerCase().includes(query);
+        const matchesDept = (req.department || '').toLowerCase().includes(query);
+        const matchesSem = `semester ${(req.semester || '')}`.includes(query) || (req.semester || '').includes(query);
 
-        if (!matchesName && !matchesID && !matchesEmail && !matchesCurrent && !matchesDesired) {
+        if (!matchesName && !matchesID && !matchesEmail && !matchesCurrent && !matchesDesired && !matchesDept && !matchesSem) {
           return false;
         }
       }
 
       return true;
     });
-  }, [requests, selectedSection, searchQuery, directionFilter]);
+  }, [requests, selectedSection, searchQuery, directionFilter, deptFilter, semesterFilter]);
 
   return (
     <section id="section-grid-section" className="relative py-24 bg-[#0c0c0e] overflow-hidden border-t border-rose-gold/10">
@@ -157,13 +179,13 @@ export default function SectionGrid({
                     {/* Student A info */}
                     <div className="pr-2">
                       <h4 className="text-sm font-semibold text-neutral-100 truncate">{reqA.name}</h4>
-                      <p className="text-[11px] text-neutral-500 font-mono mb-2">{reqA.studentId}</p>
+                      <p className="text-[11px] text-neutral-500 font-mono mb-2">{reqA.studentId} • {reqA.department} (Sem {reqA.semester})</p>
                       <div className="flex gap-2">
                         <a
                           href={`https://wa.me/${reqA.whatsapp.replace(/\+/g, '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all"
+                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all font-light text-xs shrink-0 flex items-center justify-center"
                           title="WhatsApp chat"
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
@@ -185,13 +207,13 @@ export default function SectionGrid({
                     {/* Student B info */}
                     <div className="pl-4">
                       <h4 className="text-sm font-semibold text-neutral-100 truncate">{reqB.name}</h4>
-                      <p className="text-[11px] text-neutral-500 font-mono mb-2">{reqB.studentId}</p>
+                      <p className="text-[11px] text-neutral-500 font-mono mb-2">{reqB.studentId} • {reqB.department} (Sem {reqB.semester})</p>
                       <div className="flex gap-2">
                         <a
                           href={`https://wa.me/${reqB.whatsapp.replace(/\+/g, '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all"
+                          className="p-1.5 rounded-lg bg-rose-gold/10 text-rose-gold hover:bg-rose-gold/20 transition-all font-light text-xs shrink-0 flex items-center justify-center"
                           title="WhatsApp chat"
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
@@ -288,12 +310,17 @@ export default function SectionGrid({
             <div className="flex flex-wrap items-center gap-3">
               <Filter className="w-4 h-4 text-rose-gold" />
               <h4 className="font-display text-xl font-semibold text-white">
-                {selectedSection ? `${selectedSection} Requests` : 'All CSE Requests'} ({filteredRequests.length})
+                {selectedSection 
+                  ? `${selectedSection} Requests` 
+                  : deptFilter !== 'all' 
+                    ? `${deptFilter} Registry` 
+                    : 'All Department Registry'
+                } ({filteredRequests.length})
               </h4>
             </div>
 
             {/* Combined Filter Controllers */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4 w-full lg:w-auto">
               
               {/* Query Search */}
               <div className="relative w-full sm:w-60">
@@ -307,13 +334,51 @@ export default function SectionGrid({
                 />
               </div>
 
+              {/* Department Filter Selector */}
+              <div className="relative w-full sm:w-auto">
+                <select
+                  value={deptFilter}
+                  onChange={(e) => setDeptFilter(e.target.value)}
+                  className="w-full sm:border sm:border-neutral-800 h-10 px-3 pr-8 rounded-xl border border-neutral-800 bg-[#0c0c0e] text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
+                >
+                  <option value="all">All Departments</option>
+                  {departmentsList.map((dept) => (
+                    <option key={`filter-${dept}`} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500 text-[10px]">
+                  ▼
+                </div>
+              </div>
+
+              {/* Semester Filter Selector */}
+              <div className="relative w-full sm:w-auto">
+                <select
+                  value={semesterFilter}
+                  onChange={(e) => setSemesterFilter(e.target.value)}
+                  className="w-full sm:border sm:border-neutral-800 h-10 px-3 pr-8 rounded-xl border border-neutral-800 bg-[#0c0c0e] text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
+                >
+                  <option value="all">All Semesters</option>
+                  {semestersList.map((sem) => (
+                    <option key={`filter-sem-${sem}`} value={sem}>
+                      Semester {sem}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500 text-[10px]">
+                  ▼
+                </div>
+              </div>
+
               {/* Status/Direction Filters (Only applicable if a Section is selected) */}
               {selectedSection && (
                 <div className="relative w-full sm:w-auto">
                   <select
                     value={directionFilter}
                     onChange={(e) => setDirectionFilter(e.target.value as any)}
-                    className="w-full sm:w-40 h-10 px-3 pr-8 rounded-xl border border-neutral-800 bg-[#0c0c0e] text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
+                    className="w-full sm:border sm:border-neutral-800 h-10 px-3 pr-8 rounded-xl border border-neutral-800 bg-[#0c0c0e] text-white text-xs appearance-none focus:outline-none focus:border-rose-gold/50 cursor-pointer font-light"
                   >
                     <option value="all">Outgoing & Incoming</option>
                     <option value="outgoing">Outgoing only</option>
@@ -361,9 +426,14 @@ export default function SectionGrid({
 
                   {/* Student Basic Metadata */}
                   <div className="border-t border-rose-gold/5 pt-4 mb-4">
-                    <span className="text-[10px] text-rose-gold bg-rose-gold/5 border border-rose-gold/20 px-2 py-0.5 rounded-full uppercase tracking-wider font-mono">
-                      Verified CSE Student
-                    </span>
+                    <div className="flex flex-wrap gap-1.5 mb-2.5">
+                      <span className="text-[10px] text-rose-gold bg-rose-gold/5 border border-rose-gold/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold font-mono">
+                        {req.department || 'CSE'}
+                      </span>
+                      <span className="text-[10px] text-neutral-300 bg-neutral-900 border border-neutral-800 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-mono">
+                        Semester {req.semester || 'N/A'}
+                      </span>
+                    </div>
                     <h5 className="text-base font-semibold text-white mt-2 truncate">{req.name}</h5>
                     <p className="text-xs text-neutral-400 font-light font-mono mt-0.5">{req.studentId}</p>
                     <p className="text-[11px] text-neutral-500 font-mono mt-0.5 max-w-full truncate">{req.email}</p>
