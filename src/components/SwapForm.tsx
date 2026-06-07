@@ -107,7 +107,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
   };
 
   return (
-    <section id="form-section" className="relative py-24 bg-[#0a0a0c] overflow-hidden">
+    <section id="form-section" className="relative py-24 bg-charcoal-dark overflow-hidden">
       {/* Decorative background overlay */}
       <div className="glow-spot w-[40vw] h-[40vw] bottom-[-5vw] left-[5%] bg-rose-gold/10" />
       <div className="glow-spot w-[30vw] h-[30vw] top-[-5vw] right-[5%] bg-dusty-pink/10" />
@@ -119,31 +119,31 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
           <span className="text-xs font-semibold uppercase tracking-[0.25em] text-rose-gold block mb-3">
             Matchmaking Registration
           </span>
-          <h2 className="font-display text-4xl md:text-5xl font-semibold text-white mb-4">
+          <h2 className="font-display text-4xl md:text-5xl font-semibold text-neutral-900 dark:text-white mb-4">
             Register Your Swap Request
           </h2>
           <div className="h-[2px] w-12 bg-rose-gold mx-auto mb-4" />
-          <p className="text-sm md:text-base text-neutral-400 font-light">
+          <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 font-light">
             Fill in your scheduling data below. Once submitted, your request will instantly go live inside our 10-section database for potential swap partners to view.
           </p>
         </div>
 
         {/* Success Modal/Banner */}
         {success && (
-          <div className="mb-12 p-8 rounded-2xl border border-emerald-500/20 bg-emerald-950/20 text-center relative overflow-hidden animate-fade-in">
+          <div className="mb-12 p-8 rounded-2xl border border-emerald-500/20 bg-emerald-[#09331a]/10 text-center relative overflow-hidden animate-fade-in">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-50" />
             <div className="w-16 h-16 rounded-full border border-emerald-500 bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8" />
             </div>
-            <h3 className="font-display text-3xl font-semibold text-white mb-2">
+            <h3 className="font-display text-3xl font-semibold text-neutral-900 dark:text-white mb-2">
               Swap Registration Complete!
             </h3>
-            <p className="text-neutral-300 max-w-lg mx-auto text-sm leading-relaxed mb-6">
-              Your match listing is now <span className="text-emerald-400 font-medium">LIVE</span> in the Active Directory. Potential swap partners can now see your request and reach out to you via WhatsApp or Facebook Profile.
+            <p className="text-neutral-600 dark:text-neutral-300 max-w-lg mx-auto text-sm leading-relaxed mb-6">
+              Your match listing is now <span className="text-emerald-500 dark:text-emerald-400 font-medium font-semibold">LIVE</span> in the Active Directory. Potential swap partners can now see your request and reach out to you via WhatsApp or Facebook Profile.
             </p>
             <button
               onClick={() => setSuccess(false)}
-              className="inline-flex h-11 px-6 rounded-full border border-emerald-500/40 hover:bg-emerald-500/10 text-white text-sm font-medium transition-all"
+              className="inline-flex h-11 px-6 rounded-full border border-emerald-500/40 hover:bg-emerald-500/10 text-neutral-800 dark:text-white text-sm font-medium transition-all"
             >
               Register Another Request / Close
             </button>
@@ -170,7 +170,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                 
                 {/* Name */}
                 <div>
-                  <label htmlFor="student-name" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                  <label htmlFor="student-name" className="block text-xs font-semibold uppercase tracking-widest text-neutral-700 dark:text-neutral-300 mb-2">
                     Student Name <span className="text-rose-gold">*</span>
                   </label>
                   <input
@@ -186,7 +186,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
 
                 {/* ID */}
                 <div>
-                  <label htmlFor="student-id" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                  <label htmlFor="student-id" className="block text-xs font-semibold uppercase tracking-widest text-neutral-700 dark:text-neutral-300 mb-2">
                     Student ID <span className="text-rose-gold">*</span>
                   </label>
                   <input
@@ -202,7 +202,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
 
                 {/* Email */}
                 <div className="md:col-span-2">
-                  <label htmlFor="student-email" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                  <label htmlFor="student-email" className="block text-xs font-semibold uppercase tracking-widest text-neutral-700 dark:text-neutral-300 mb-2">
                     University Email <span className="text-rose-gold">*</span>
                   </label>
                   <input
@@ -214,14 +214,14 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     placeholder="e.g. 221002015@eastdelta.edu.bd"
                     className="form-input"
                   />
-                  <p className="text-[11px] text-neutral-500 mt-1.5 font-light">
+                  <p className="text-[11px] text-neutral-600 dark:text-neutral-500 mt-1.5 font-light">
                     Your official university domain email address is safe.
                   </p>
                 </div>
 
                 {/* Department Dropdown */}
                 <div>
-                  <label htmlFor="student-department" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                  <label htmlFor="student-department" className="block text-xs font-semibold uppercase tracking-widest text-neutral-700 dark:text-neutral-300 mb-2">
                     Department <span className="text-rose-gold">*</span>
                   </label>
                   <div className="relative">
@@ -239,7 +239,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                         </option>
                       ))}
                     </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400">
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500">
                       ▼
                     </div>
                   </div>
@@ -247,7 +247,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
 
                 {/* Semester Dropdown */}
                 <div>
-                  <label htmlFor="student-semester" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                  <label htmlFor="student-semester" className="block text-xs font-semibold uppercase tracking-widest text-neutral-700 dark:text-neutral-300 mb-2">
                     Semester <span className="text-rose-gold">*</span>
                   </label>
                   <div className="relative">
@@ -265,7 +265,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                         </option>
                       ))}
                     </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400">
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500">
                       ▼
                     </div>
                   </div>
@@ -273,7 +273,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
 
                 {/* Current Section Dropdown */}
                 <div>
-                  <label htmlFor="current-section" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                  <label htmlFor="current-section" className="block text-xs font-semibold uppercase tracking-widest text-neutral-700 dark:text-neutral-300 mb-2">
                     Current Section <span className="text-rose-gold">*</span>
                   </label>
                   <div className="relative">
@@ -291,7 +291,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                         </option>
                       ))}
                     </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400">
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500">
                       ▼
                     </div>
                   </div>
@@ -299,7 +299,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
 
                 {/* Desired Section Dropdown */}
                 <div>
-                  <label htmlFor="desired-section" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                  <label htmlFor="desired-section" className="block text-xs font-semibold uppercase tracking-widest text-neutral-700 dark:text-neutral-300 mb-2">
                     Desired Section <span className="text-rose-gold">*</span>
                   </label>
                   <div className="relative">
@@ -317,7 +317,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                         </option>
                       ))}
                     </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-400">
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500">
                       ▼
                     </div>
                   </div>
@@ -325,7 +325,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
 
                 {/* WhatsApp Number */}
                 <div>
-                  <label htmlFor="student-whatsapp" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                  <label htmlFor="student-whatsapp" className="block text-xs font-semibold uppercase tracking-widest text-neutral-700 dark:text-neutral-300 mb-2">
                     WhatsApp Number <span className="text-rose-gold">*</span>
                   </label>
                   <input
@@ -337,14 +337,14 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     placeholder="e.g. +88017XXXXXXXX"
                     className="form-input"
                   />
-                  <p className="text-[11px] text-neutral-500 mt-1.5 font-light">
+                  <p className="text-[11px] text-neutral-600 dark:text-neutral-500 mt-1.5 font-light">
                     Double-check so matching partners can message you.
                   </p>
                 </div>
 
                 {/* Facebook Profile Link */}
                 <div>
-                  <label htmlFor="student-facebook" className="block text-xs font-semibold uppercase tracking-widest text-neutral-300 mb-2">
+                  <label htmlFor="student-facebook" className="block text-xs font-semibold uppercase tracking-widest text-neutral-700 dark:text-neutral-300 mb-2">
                     Facebook Username or Link <span className="text-neutral-500 font-normal text-[10px] lowercase">(optional)</span>
                   </label>
                   <input
@@ -355,7 +355,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
                     placeholder="e.g. username or facebook.com/username"
                     className="form-input"
                   />
-                  <p className="text-[11px] text-neutral-500 mt-1.5 font-light">
+                  <p className="text-[11px] text-neutral-600 dark:text-neutral-500 mt-1.5 font-light">
                     Optional secondary channel to sync up on Facebook.
                   </p>
                 </div>
@@ -385,8 +385,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
 
             </form>
           </div>
-        
-      </div>
+        </div>
     </section>
   );
 }
