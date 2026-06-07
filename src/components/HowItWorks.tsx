@@ -30,7 +30,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="relative py-24 border-y border-rose-gold/10 bg-[#101013]/30 overflow-hidden">
+    <section className="relative py-24 border-y border-rose-gold/10 bg-charcoal-mid/30 overflow-hidden">
       
       {/* Decorative Blur Spot */}
       <div className="glow-spot w-[35vw] h-[35vw] top-[30%] left-[35%] bg-rose-gold/8" />
@@ -42,11 +42,11 @@ export default function HowItWorks() {
           <span className="text-xs font-semibold uppercase tracking-[0.25em] text-rose-gold block mb-3">
             Simple Verification Process
           </span>
-          <h2 className="font-display text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4">
+          <h2 className="font-display text-4xl md:text-5xl font-semibold tracking-tight text-neutral-900 dark:text-white mb-4">
             How It Works
           </h2>
           <div className="h-[2px] w-12 bg-rose-gold mx-auto mb-4" />
-          <p className="text-sm md:text-base text-neutral-400 font-light max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 font-light max-w-2xl mx-auto">
             Find an opposite match in four straightforward steps. No tedious group chats or manual tracking of dozens of student threads.
           </p>
         </div>
@@ -76,10 +76,10 @@ export default function HowItWorks() {
                 </div>
 
                 {/* Text Group */}
-                <h3 className="font-display text-xl font-semibold text-white mb-2 tracking-tight">
+                <h3 className="font-display text-xl font-semibold text-neutral-900 dark:text-white mb-2 tracking-tight">
                   {step.title}
                 </h3>
-                <p className="text-xs md:text-sm text-neutral-400 leading-relaxed text-center md:text-left font-light">
+                <p className="text-xs md:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed text-center md:text-left font-light">
                   {step.description}
                 </p>
               </div>
