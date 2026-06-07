@@ -46,7 +46,7 @@ export default function AdminPanel({
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-gold/5 border border-rose-gold/15 text-[11px] text-rose-gold font-mono uppercase tracking-widest mb-3">
               <ShieldCheck className="w-3.5 h-3.5 animate-pulse" />
-              CSE Department Panel
+              EDU Administration Panel
             </div>
             <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-white">
               Database Admin Portal
