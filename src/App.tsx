@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
 import { INITIAL_SWAP_REQUESTS, INITIAL_FAQ } from './data';
 import { SwapRequest } from './types';
-import { ArrowLeftRight, Sparkles, MessageSquare, Facebook, Check, X } from 'lucide-react';
+import { ArrowLeftRight, Sparkles, MessageSquare, Facebook, Check, X, Lock, Unlock } from 'lucide-react';
 import { db, handleFirestoreError, OperationType } from './firebase';
 import { collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch, getDocs } from 'firebase/firestore';
 
@@ -27,6 +27,17 @@ export default function App() {
     }
     return INITIAL_SWAP_REQUESTS;
   });
+
+  // Dynamic appearance selection preset: 'auto' | 'light' | 'dark'
+  const [theme, setTheme] = useState<'auto' | 'light' | 'dark'>(() => {
+    return (localStorage.getItem('edu_section_matrimony_theme') as 'auto' | 'light' | 'dark') || 'dark';
+  });
+
+  // Raised Administrative level authentication state
+  const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
+  const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
+  const [adminPasscode, setAdminPasscode] = useState('');
+  const [adminError, setAdminError] = useState(false);
 
   // Real-time synchronization layer with Cloud Firestore
   useEffect(() => {
@@ -49,6 +60,47 @@ export default function App() {
     return () => unsub();
   }, []);
 
+  // System preferred theme listeners and DOM class modifier layer
+  useEffect(() => {
+    const handleSystemTheme = (e: MediaQueryListEvent) => {
+      if (theme === 'auto') {
+        const root = document.documentElement;
+        if (e.matches) {
+          root.classList.add('dark');
+          root.classList.remove('light');
+        } else {
+          root.classList.add('light');
+          root.classList.remove('dark');
+        }
+      }
+    };
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const root = document.documentElement;
+
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else if (theme === 'light') {
+      root.classList.add('light');
+      root.classList.remove('dark');
+    } else {
+      // Auto (sync to device status)
+      if (mediaQuery.matches) {
+        root.classList.add('dark');
+        root.classList.remove('light');
+      } else {
+        root.classList.add('light');
+        root.classList.remove('dark');
+      }
+    }
+
+    mediaQuery.addEventListener('change', handleSystemTheme);
+    localStorage.setItem('edu_section_matrimony_theme', theme);
+
+    return () => mediaQuery.removeEventListener('change', handleSystemTheme);
+  }, [theme]);
+
   // Modal alert state for direct match found on submit!
   const [matchAlert, setMatchAlert] = useState<{
     yourReq: SwapRequest;
@@ -60,10 +112,28 @@ export default function App() {
   const activeSwapsRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const faqRef = useRef<HTMLDivElement>(null);
+  const adminPanelRef = useRef<HTMLDivElement>(null);
 
   const scrollRef = (ref: React.RefObject<HTMLDivElement | null>) => {
     if (ref && ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleAdminModalLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (adminPasscode === 'admin@sm0605') {
+      setIsAdminUnlocked(true);
+      setIsAdminLoginOpen(false);
+      setAdminError(false);
+      setAdminPasscode('');
+      // Scroll smoothly straight to the admin section
+      setTimeout(() => {
+        scrollRef(adminPanelRef);
+      }, 300);
+    } else {
+      setAdminError(true);
+      setTimeout(() => setAdminError(false), 2000);
     }
   };
 
@@ -143,7 +213,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0c0c0e] text-white flex flex-col font-sans selection:bg-rose-gold/30 selection:text-white">
+    <div className="min-h-screen bg-charcoal-dark text-neutral-900 dark:text-white flex flex-col font-sans selection:bg-rose-gold/30 selection:text-white transition-colors duration-300">
       
       {/* Decorative full-body glow highlights */}
       <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-rose-gold/5 rounded-full blur-[110px] pointer-events-none" />
@@ -155,6 +225,10 @@ export default function App() {
         onHowItWorksClick={() => scrollRef(howItWorksRef)}
         onActiveSwapsClick={() => scrollRef(activeSwapsRef)}
         onFaqClick={() => scrollRef(faqRef)}
+        theme={theme}
+        setTheme={setTheme}
+        isAdminUnlocked={isAdminUnlocked}
+        onAdminLoginClick={() => setIsAdminLoginOpen(true)}
       />
 
       {/* Hero Header Module */}
@@ -184,12 +258,14 @@ export default function App() {
       </div>
 
       {/* Admin Panel Control Workspace */}
-      <div className="scroll-mt-20">
+      <div ref={adminPanelRef} className="scroll-mt-20">
         <AdminPanel
           requests={requests}
           onDeleteRequest={handleDeleteRequest}
           onClearAll={handleClearAll}
           onResetDefaults={handleResetDefaults}
+          isAdminUnlocked={isAdminUnlocked}
+          setIsAdminUnlocked={setIsAdminUnlocked}
         />
       </div>
 
@@ -201,6 +277,68 @@ export default function App() {
         onActiveSwapsClick={() => scrollRef(activeSwapsRef)}
         onFaqClick={() => scrollRef(faqRef)}
       />
+
+      {/* Dynamic Admin Login Dialog Modal */}
+      {isAdminLoginOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-md p-6 md:p-8 rounded-3xl border border-rose-gold/40 bg-gradient-to-br from-[#141418] to-[#1e1416] text-center shadow-2xl">
+            
+            <button
+              onClick={() => {
+                setIsAdminLoginOpen(false);
+                setAdminPasscode('');
+                setAdminError(false);
+              }}
+              className="absolute top-4 right-4 p-2 rounded-full border border-rose-gold/10 hover:border-rose-gold/30 hover:bg-rose-gold/5 text-neutral-400 hover:text-white transition-all cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="w-12 h-12 rounded-full bg-neutral-900 border border-rose-gold/25 flex items-center justify-center mx-auto mb-4">
+              <Lock className="w-5 h-5 text-rose-gold" />
+            </div>
+
+            <h3 className="font-display text-2xl font-bold text-white mb-2">
+              Administrator Login
+            </h3>
+            <p className="text-xs text-neutral-300 font-light mb-6">
+              Please enter the administrator credentials key to unlock premium registry moderation tools instantly.
+            </p>
+
+            <form onSubmit={handleAdminModalLoginSubmit} className="space-y-4 text-left">
+              <div>
+                <label className="block text-[10px] uppercase font-bold tracking-widest text-neutral-400 mb-1.5 font-mono">
+                  Access License Key / Passcode
+                </label>
+                <input
+                  type="password"
+                  value={adminPasscode}
+                  onChange={(e) => setAdminPasscode(e.target.value)}
+                  placeholder="Enter passcode..."
+                  className={`form-input text-center placeholder-neutral-600 ${
+                    adminError ? 'border-red-500 ring-1 ring-red-500/20' : ''
+                  }`}
+                  autoFocus
+                />
+                {adminError && (
+                  <p className="text-[11px] text-red-400 mt-1.5 font-light text-center font-mono">
+                    Incorrect administrator passcode! Try again.
+                  </p>
+                )}
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="w-full h-11 rounded-full bg-rose-gold hover:bg-dusty-pink text-white text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer shadow-md shadow-rose-gold/20"
+                >
+                  Authorize and Open Panel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* 4. Instant Reciprocal Matrimony MATCH ALERT POPUP MODAL */}
       {matchAlert && (
