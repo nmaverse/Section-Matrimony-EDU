@@ -31,7 +31,7 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
     return `Section ${num < 10 ? '0' + num : num}`;
   });
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
 
@@ -58,8 +58,11 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
 
     // Pass up to App state
     setIsSubmitting(true);
-    setTimeout(() => {
-      onSubmitRequest({
+    try {
+      // Simulate slight smooth visual saving pause
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      await onSubmitRequest({
         name,
         studentId,
         email,
@@ -72,9 +75,8 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
       });
 
       setSuccess(true);
-      setIsSubmitting(false);
 
-      // Clear Form Fields
+      // Clear Form Fields on success
       setName('');
       setStudentId('');
       setEmail('');
@@ -84,7 +86,24 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
       setDesiredSection('');
       setWhatsapp('');
       setFacebook('');
-    }, 1200);
+    } catch (err: any) {
+      console.error("Firestore submit error caught in UI:", err);
+      // Clean up the error message for display if it's JSON from handleFirestoreError
+      let userFriendlyError = 'Failed to register your request. Please check your internet connection and try again.';
+      if (err instanceof Error) {
+        try {
+          const parsed = JSON.parse(err.message);
+          if (parsed && parsed.error) {
+            userFriendlyError = `Database Connection Error: ${parsed.error}`;
+          }
+        } catch {
+          userFriendlyError = err.message;
+        }
+      }
+      setErrorMsg(userFriendlyError);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
