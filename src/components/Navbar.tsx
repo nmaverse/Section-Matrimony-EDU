@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeftRight, Menu, X, Sparkles, Sun, Moon, Monitor, Lock, Unlock } from 'lucide-react';
+import { ArrowLeftRight, Menu, X, Sparkles, Sun, Moon, Monitor, Lock, Unlock, Presentation } from 'lucide-react';
 
 interface NavbarProps {
   onSubmitRequestClick: () => void;
@@ -10,6 +10,7 @@ interface NavbarProps {
   setTheme: (t: 'auto' | 'light' | 'dark') => void;
   isAdminUnlocked: boolean;
   onAdminLoginClick: () => void;
+  onPresentationClick: () => void;
 }
 
 export default function Navbar({
@@ -20,7 +21,8 @@ export default function Navbar({
   theme,
   setTheme,
   isAdminUnlocked,
-  onAdminLoginClick
+  onAdminLoginClick,
+  onPresentationClick
 }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -125,6 +127,14 @@ export default function Navbar({
             </div>
             
             <button
+              onClick={onPresentationClick}
+              className="inline-flex items-center gap-1.5 px-4 h-11 rounded-full border border-rose-gold/20 hover:border-rose-gold/50 bg-charcoal-mid/60 text-rose-gold text-sm font-semibold hover:bg-rose-gold/5 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 cursor-pointer"
+            >
+              <Presentation className="w-4 h-4 text-rose-gold animate-pulse" />
+              <span>Presentation</span>
+            </button>
+            
+            <button
               onClick={() => handleLinkClick(onSubmitRequestClick)}
               className="inline-flex items-center gap-2 px-5 h-11 rounded-full bg-rose-gold text-white text-sm font-medium tracking-wider hover:bg-dusty-pink hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-md shadow-rose-gold/10 cursor-pointer"
             >
@@ -183,6 +193,17 @@ export default function Navbar({
               className="px-3 py-2 rounded-md text-left text-base font-medium text-neutral-700 dark:text-gray-300 hover:text-rose-gold hover:bg-charcoal-light transition-all cursor-pointer"
             >
               FAQ
+            </button>
+
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                onPresentationClick();
+              }}
+              className="px-3 py-2 rounded-md text-left text-base font-medium text-neutral-700 dark:text-gray-300 hover:text-rose-gold hover:bg-charcoal-light transition-all cursor-pointer flex items-center gap-2"
+            >
+              <Presentation className="w-4 h-5 text-rose-gold animate-pulse" />
+              <span>Project Presentation</span>
             </button>
 
             <button
