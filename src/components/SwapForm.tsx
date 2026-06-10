@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle, AlertTriangle, HelpCircle, ArrowRightLeft, Sparkles } from 'lucide-react';
+import { Send, CheckCircle, AlertTriangle, HelpCircle, ArrowRightLeft, Sparkles, X, PartyPopper, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { SwapRequest } from '../types';
 
 interface SwapFormProps {
@@ -23,6 +24,15 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Cache submitted details for summary display in the gorgeous popup
+  const [submittedDetails, setSubmittedDetails] = useState<{
+    name: string;
+    department: string;
+    semester: string;
+    currentSection: string;
+    desiredSection: string;
+  } | null>(null);
+
   const departmentsList = ['CSE', 'EEE', 'ETE', 'ENGLISH', 'ECONOMICS', 'BBA', 'BSBA'];
   const semestersList = Array.from({ length: 12 }, (_, i) => String(i + 1));
 
@@ -30,6 +40,13 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
     const num = i + 1;
     return `Section ${num < 10 ? '0' + num : num}`;
   });
+
+  const handleViewDirectory = () => {
+    setSuccess(false);
+    setTimeout(() => {
+      document.getElementById('directory-section')?.scrollIntoView({ behavior: 'smooth' });
+    }, 120);
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,6 +89,15 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
         desiredSection,
         whatsapp,
         facebook,
+      });
+
+      // Cache details for visual display in success modal
+      setSubmittedDetails({
+        name,
+        department,
+        semester,
+        currentSection,
+        desiredSection,
       });
 
       setSuccess(true);
@@ -128,27 +154,134 @@ export default function SwapForm({ onSubmitRequest }: SwapFormProps) {
           </p>
         </div>
 
-        {/* Success Modal/Banner */}
-        {success && (
-          <div className="mb-12 p-8 rounded-2xl border border-emerald-500/20 bg-emerald-[#09331a]/10 text-center relative overflow-hidden animate-fade-in">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-50" />
-            <div className="w-16 h-16 rounded-full border border-emerald-500 bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-8 h-8" />
+        {/* Success Modal Dialogue */}
+        <AnimatePresence>
+          {success && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto">
+              {/* Overlay background */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSuccess(false)}
+                className="fixed inset-0 bg-black/85 backdrop-blur-md cursor-pointer"
+              />
+
+              {/* Success container card with high-end spring scaling animations */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: 1, 
+                  y: 0,
+                  transition: { type: "spring", stiffness: 300, damping: 25 }
+                }}
+                exit={{ 
+                  opacity: 0, 
+                  scale: 0.95, 
+                  y: 15,
+                  transition: { duration: 0.2 }
+                }}
+                className="relative w-full max-w-lg p-6 md:p-8 rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-[#0a1410] via-[#121217] to-[#141419] text-center shadow-2xl z-50 overflow-hidden"
+              >
+                {/* Visual glows and sparks */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+                <div className="absolute top-[-20%] right-[-10%] w-32 h-32 bg-rose-gold/5 rounded-full blur-2xl pointer-events-none" />
+
+                <button
+                  onClick={() => setSuccess(false)}
+                  className="absolute top-4 right-4 p-2 rounded-full border border-neutral-800 hover:border-neutral-700 hover:bg-neutral-800/40 text-neutral-400 hover:text-white transition-all cursor-pointer z-50 animate-fade-in"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                {/* Double Ring Pulsator */}
+                <div className="relative w-18 h-18 mx-auto mb-5 flex items-center justify-center">
+                  <motion.div 
+                    animate={{ scale: [1, 1.25, 1], opacity: [0.3, 0.1, 0.3] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-0 rounded-full bg-emerald-500/10 border border-emerald-500/20"
+                  />
+                  <motion.div 
+                    animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.15, 0.4] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30"
+                  />
+                  <div className="relative w-13 h-13 rounded-full bg-[#12281b] border border-emerald-500/50 flex items-center justify-center text-emerald-400 shadow-lg shadow-emerald-500/10">
+                    <PartyPopper className="w-6 h-6" />
+                  </div>
+                </div>
+
+                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full inline-block mb-1">
+                  Successfully Listed!
+                </span>
+
+                <h3 className="font-display text-2.5xl md:text-3xl font-semibold text-white mt-4 mb-2">
+                  Swap Search is Now LIVE!
+                </h3>
+                
+                <p className="text-neutral-400 text-xs md:text-sm max-w-sm mx-auto leading-relaxed mb-6 font-light">
+                  Your request has been successfully registered to our active database. You are now reachable for section matchups.
+                </p>
+
+                {/* Swap visual Ticket Summary Card */}
+                {submittedDetails && (
+                  <div className="mb-6 p-4 rounded-2xl border border-neutral-800/80 bg-neutral-900/50 text-left relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-rose-gold/2 rounded-full blur-xl pointer-events-none" />
+                    
+                    <div className="flex items-center gap-2 mb-3 text-neutral-400">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[10px] uppercase font-mono tracking-wider">Active Search Ticket Details</span>
+                    </div>
+
+                    <div className="space-y-1.5 text-xs text-neutral-300">
+                      <div className="flex justify-between">
+                        <span className="text-neutral-500 font-light">Student:</span>
+                        <span className="text-neutral-200 font-medium truncate max-w-[240px]">{submittedDetails.name}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-500 font-light">Department:</span>
+                        <span className="text-neutral-200 font-medium">{submittedDetails.department} (Semester {submittedDetails.semester})</span>
+                      </div>
+                      
+                      {/* Section exchange display */}
+                      <div className="mt-3.5 pt-3 border-t border-neutral-800/60 flex items-center justify-around bg-neutral-950/30 py-2 rounded-xl border border-neutral-900/40">
+                        <div className="text-center">
+                          <p className="text-[9px] text-neutral-500 uppercase font-mono tracking-wide">Current</p>
+                          <p className="text-xs md:text-sm font-semibold text-neutral-300 font-mono mt-0.5">{submittedDetails.currentSection}</p>
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center shrink-0 border border-neutral-800 text-rose-gold shadow-md">
+                          <ArrowRightLeft className="w-3.5 h-3.5 animate-pulse" />
+                        </div>
+                        <div className="text-center">
+                          <p className="text-[9px] text-neutral-500 uppercase font-mono tracking-wide">Desired</p>
+                          <p className="text-xs md:text-sm font-semibold text-rose-gold font-mono mt-0.5">{submittedDetails.desiredSection}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Interactive buttons */}
+                <div className="flex flex-col sm:flex-row items-center gap-3 justify-center z-10 relative">
+                  <button
+                    onClick={handleViewDirectory}
+                    className="w-full sm:w-auto h-11 px-6 rounded-full bg-rose-gold hover:bg-dusty-pink text-white text-xs font-semibold tracking-wider uppercase transition-all duration-300 transform active:scale-95 cursor-pointer shadow-lg shadow-rose-gold/15"
+                  >
+                    View in Directory
+                  </button>
+                  <button
+                    onClick={() => setSuccess(false)}
+                    className="w-full sm:w-auto h-11 px-6 rounded-full border border-neutral-800 hover:border-neutral-750 hover:bg-neutral-800/40 text-neutral-400 hover:text-white text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer"
+                  >
+                    Register Another search
+                  </button>
+                </div>
+
+              </motion.div>
             </div>
-            <h3 className="font-display text-3xl font-semibold text-neutral-900 dark:text-white mb-2">
-              Swap Registration Complete!
-            </h3>
-            <p className="text-neutral-600 dark:text-neutral-300 max-w-lg mx-auto text-sm leading-relaxed mb-6">
-              Your match listing is now <span className="text-emerald-500 dark:text-emerald-400 font-medium font-semibold">LIVE</span> in the Active Directory. Potential swap partners can now see your request and reach out to you via WhatsApp or Facebook Profile.
-            </p>
-            <button
-              onClick={() => setSuccess(false)}
-              className="inline-flex h-11 px-6 rounded-full border border-emerald-500/40 hover:bg-emerald-500/10 text-neutral-800 dark:text-white text-sm font-medium transition-all"
-            >
-              Register Another Request / Close
-            </button>
-          </div>
-        )}
+          )}
+        </AnimatePresence>
 
         {/* Normal High Refinement Reactive Form */}
         <div className="p-6 md:p-10 rounded-3xl border border-rose-gold/10 bg-charcoal-mid/70 backdrop-blur-md shadow-xl relative overflow-hidden">
