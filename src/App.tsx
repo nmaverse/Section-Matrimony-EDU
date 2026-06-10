@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
@@ -253,7 +254,7 @@ export default function App() {
       </div>
 
       {/* Interactive 10-Section Directory */}
-      <div ref={activeSwapsRef} className="scroll-mt-20">
+      <div id="directory-section" ref={activeSwapsRef} className="scroll-mt-20">
         <SectionGrid requests={requests} />
       </div>
 
@@ -346,88 +347,187 @@ export default function App() {
       )}
 
       {/* 4. Instant Reciprocal Matrimony MATCH ALERT POPUP MODAL */}
-      {matchAlert && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="relative w-full max-w-xl p-6 md:p-8 rounded-3xl border border-rose-gold/40 bg-gradient-to-br from-charcoal-mid to-[#1e1416] text-center shadow-2xl overflow-hidden">
+      <AnimatePresence>
+        {matchAlert && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto">
             
-            {/* Visual background sparkles */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-gold/15 rounded-full blur-2xl" />
-            <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-rose-gold/10 rounded-full blur-xl" />
-
-            <button
+            {/* Overlay blur background */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => setMatchAlert(null)}
-              className="absolute top-4 right-4 p-2 rounded-full border border-rose-gold/10 hover:border-rose-gold/30 hover:bg-rose-gold/5 text-neutral-400 hover:text-white transition-all cursor-pointer"
+              className="fixed inset-0 bg-black/85 backdrop-blur-md cursor-pointer"
+            />
+
+            {/* Match Floating Particles */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none z-55">
+              {Array.from({ length: 30 }).map((_, i) => {
+                const size = Math.random() * 8 + 6;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 1;
+                const duration = Math.random() * 2 + 1.8;
+                return (
+                  <motion.div
+                    key={`m-conf-${i}`}
+                    initial={{ y: -20, x: `${left}%`, opacity: 1, rotate: Math.random() * 360 }}
+                    animate={{ 
+                      y: '110vh', 
+                      rotate: Math.random() * 720 - 360,
+                      opacity: [1, 1, 0]
+                    }}
+                    transition={{
+                      duration: duration,
+                      delay: delay,
+                      ease: 'linear',
+                      repeat: Infinity
+                    }}
+                    className={`absolute top-0 pointer-events-none ${i % 2 === 0 ? 'bg-[#b76e79]' : 'bg-[#e0b0b0]'} ${Math.random() > 0.5 ? 'rounded-full' : 'rounded-sm'}`}
+                    style={{
+                      width: size,
+                      height: Math.random() > 0.5 ? size : size * 1.5,
+                      zIndex: 40,
+                    }}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Interactive Spring Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1, 
+                y: 0,
+                transition: { type: "spring", stiffness: 300, damping: 25 }
+              }}
+              exit={{ 
+                opacity: 0, 
+                scale: 0.95, 
+                y: 15,
+                transition: { duration: 0.2 }
+              }}
+              className="relative w-full max-w-xl p-6 md:p-8 rounded-3xl border border-rose-gold/40 bg-gradient-to-br from-[#1c1214] via-[#121216] to-[#121217] text-center shadow-2xl z-50 overflow-hidden"
             >
-              <X className="w-4 h-4" />
-            </button>
-
-            <div className="w-16 h-16 rounded-full border border-rose-gold bg-rose-gold/10 text-rose-gold flex items-center justify-center mx-auto mb-6">
-              <Sparkles className="w-8 h-8 animate-pulse" />
-            </div>
-
-            <span className="text-[10px] uppercase font-bold text-rose-gold bg-rose-gold/10 border border-rose-gold/30 px-3 py-1 rounded-full tracking-widest">
-              Instant Perfect Match Found!
-            </span>
-
-            <h3 className="font-display text-3xl md:text-4xl font-semibold text-white mt-4 mb-2">
-              It's a Section match!
-            </h3>
-            
-            <p className="text-neutral-400 font-light text-xs md:text-sm max-w-md mx-auto leading-relaxed mb-8">
-              A student is currently looking for the exact opposite trade! You are in <span className="text-white font-medium">{matchAlert.yourReq.currentSection}</span> wanting <span className="text-rose-gold font-medium">{matchAlert.yourReq.desiredSection}</span>, and they are in <span className="text-rose-gold font-medium">{matchAlert.matchedReq.currentSection}</span> wanting <span className="text-white font-semibold">{matchAlert.matchedReq.desiredSection}</span>.
-            </p>
-
-            {/* Partner Details Block */}
-            <div className="p-5 rounded-2xl border border-rose-gold/10 bg-charcoal-dark/90 text-left mb-8">
-              <span className="text-[10px] text-neutral-500 uppercase font-mono tracking-wider">Your Matching Partner</span>
-              <h4 className="text-lg font-bold text-neutral-100 mt-1">{matchAlert.matchedReq.name}</h4>
-              <p className="text-xs text-neutral-400 font-mono">ID: {matchAlert.matchedReq.studentId}</p>
-              <p className="text-xs text-neutral-500 font-mono mt-0.5">{matchAlert.matchedReq.email}</p>
               
-              <div className={`mt-4 pt-4 border-t border-rose-gold/5 ${matchAlert.matchedReq.facebook ? 'grid grid-cols-2 gap-4' : 'block'}`}>
-                <a
-                  href={`https://wa.me/${matchAlert.matchedReq.whatsapp.replace(/\+/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#25d366]/10 text-[#25d366] text-xs font-semibold hover:bg-[#25d366]/20 border border-[#25d366]/20 transition-all cursor-pointer w-full"
-                >
-                  <MessageSquare className="w-4 h-4" /> Chat on WhatsApp
-                </a>
-                {matchAlert.matchedReq.facebook && (
-                  <a
-                    href={getFacebookUrl(matchAlert.matchedReq.facebook)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#1877f2]/10 text-[#1877f2] text-xs font-semibold hover:bg-[#1877f2]/20 border border-[#1877f2]/20 transition-all cursor-pointer w-full"
-                  >
-                    <Facebook className="w-4 h-4" /> Facebook Profile
-                  </a>
-                )}
-              </div>
-            </div>
+              {/* Visual background sparkles & glows */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-rose-gold/15 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-rose-gold/10 rounded-full blur-xl pointer-events-none" />
 
-            {/* CTA action buttons */}
-            <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
               <button
                 onClick={() => setMatchAlert(null)}
-                className="w-full sm:w-auto h-11 px-6 rounded-full bg-rose-gold hover:bg-dusty-pink text-white text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer"
+                className="absolute top-4 right-4 p-2 rounded-full border border-neutral-800 hover:border-rose-gold/30 hover:bg-rose-gold/5 text-neutral-400 hover:text-white transition-all cursor-pointer z-50 animate-fade-in"
               >
-                Close and Continue
+                <X className="w-4 h-4" />
               </button>
-              <button
-                onClick={() => {
-                  setMatchAlert(null);
-                  scrollRef(activeSwapsRef);
-                }}
-                className="w-full sm:w-auto h-11 px-6 rounded-full border border-rose-gold/30 hover:bg-rose-gold/5 text-rose-gold text-xs font-semibold tracking-wider uppercase transition-all cursor-pointer"
-              >
-                View in Directory
-              </button>
-            </div>
 
+              {/* Pulsating Match Icon */}
+              <div className="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                <motion.div 
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.1, 0.4] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 rounded-full bg-rose-gold/10 border border-rose-gold/20"
+                />
+                <motion.div 
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.2, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-2 rounded-full bg-rose-gold/15 border border-rose-gold/30"
+                />
+                <div className="relative w-14 h-14 rounded-full bg-[#271518] border border-rose-gold/50 flex items-center justify-center text-rose-gold shadow-lg shadow-rose-gold/20">
+                  <Sparkles className="w-7 h-7" />
+                </div>
+              </div>
+
+              <span className="text-[10px] uppercase font-bold text-rose-gold bg-rose-gold/10 border border-rose-gold/30 px-3.5 py-1 rounded-full tracking-widest inline-block mb-1">
+                Instant Perfect Match Found!
+              </span>
+
+              <h3 className="font-display text-3xl md:text-4xl font-semibold text-white mt-4 mb-2">
+                It's a Section Match!
+              </h3>
+              
+              <p className="text-neutral-400 font-light text-xs md:text-sm max-w-md mx-auto leading-relaxed mb-6">
+                Another student is looking for the exact opposite trade! You are in <span className="text-white font-medium">{matchAlert.yourReq.currentSection}</span> wanting <span className="text-rose-gold font-medium">{matchAlert.yourReq.desiredSection}</span>, and they are in <span className="text-rose-gold font-medium">{matchAlert.matchedReq.currentSection}</span> wanting <span className="text-white font-semibold">{matchAlert.matchedReq.desiredSection}</span>.
+              </p>
+
+              {/* Match Connection Flow Diagram */}
+              <div className="flex items-center justify-center gap-4 mb-6 bg-neutral-950/40 p-3.5 rounded-2xl border border-rose-gold/5 max-w-md mx-auto">
+                <div className="text-center w-5/12">
+                  <span className="text-[9px] text-neutral-500 uppercase font-mono">Your Request</span>
+                  <div className="flex flex-col items-center mt-1">
+                    <span className="text-xs text-neutral-300 font-medium truncate max-w-full">{matchAlert.yourReq.name}</span>
+                    <span className="text-sm font-bold text-neutral-100 font-mono mt-0.5">{matchAlert.yourReq.currentSection}</span>
+                  </div>
+                </div>
+
+                <div className="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center border border-rose-gold/20 text-rose-gold shrink-0">
+                  <ArrowLeftRight className="w-4 h-4 animate-pulse" />
+                </div>
+
+                <div className="text-center w-5/12">
+                  <span className="text-[9px] text-rose-gold/80 uppercase font-mono font-medium">Their Request</span>
+                  <div className="flex flex-col items-center mt-1">
+                    <span className="text-xs text-[#eed6d9] font-medium truncate max-w-full">{matchAlert.matchedReq.name}</span>
+                    <span className="text-sm font-bold text-rose-gold font-mono mt-0.5">{matchAlert.matchedReq.currentSection}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Partner Details Block */}
+              <div className="p-5 rounded-2xl border border-rose-gold/15 bg-charcoal-dark/95 text-left mb-6 max-w-md mx-auto relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-rose-gold/2 rounded-full blur-xl pointer-events-none" />
+                
+                <span className="text-[10px] text-neutral-500 uppercase font-mono tracking-wider block mb-1">Matching Partner Information</span>
+                <h4 className="text-base font-bold text-neutral-100">{matchAlert.matchedReq.name}</h4>
+                <p className="text-xs text-neutral-400 font-mono">ID: {matchAlert.matchedReq.studentId} • {matchAlert.matchedReq.department} (Sem {matchAlert.matchedReq.semester})</p>
+                <p className="text-xs text-neutral-500 font-mono mt-0.5">{matchAlert.matchedReq.email}</p>
+                
+                <div className={`mt-4 pt-4 border-t border-rose-gold/10 ${matchAlert.matchedReq.facebook ? 'grid grid-cols-2 gap-3.5' : 'block'}`}>
+                  <a
+                    href={`https://wa.me/${matchAlert.matchedReq.whatsapp.replace(/\+/g, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-11 items-center justify-center gap-1.5 rounded-xl bg-[#25d366]/10 text-[#25d366] text-xs font-semibold hover:bg-[#25d366]/20 border border-[#25d366]/20 transition-all cursor-pointer w-full text-center"
+                  >
+                    <MessageSquare className="w-4 h-4 shrink-0" /> WhatsApp Chat
+                  </a>
+                  {matchAlert.matchedReq.facebook && (
+                    <a
+                      href={getFacebookUrl(matchAlert.matchedReq.facebook)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-11 items-center justify-center gap-1.5 rounded-xl bg-[#1877f2]/10 text-[#1877f2] text-xs font-semibold hover:bg-[#1877f2]/20 border border-[#1877f2]/20 transition-all cursor-pointer w-full text-center text-ellipsis overflow-hidden"
+                    >
+                      <Facebook className="w-4 h-4 shrink-0" /> Social Profile
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* CTA action buttons */}
+              <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
+                <button
+                  onClick={() => setMatchAlert(null)}
+                  className="w-full sm:w-auto h-11 px-7 rounded-full bg-rose-gold hover:bg-dusty-pink text-white text-xs font-semibold tracking-wider uppercase transition-all duration-300 shadow-lg shadow-rose-gold/10 cursor-pointer"
+                >
+                  Close and Continue
+                </button>
+                <button
+                  onClick={() => {
+                    setMatchAlert(null);
+                    scrollRef(activeSwapsRef);
+                  }}
+                  className="w-full sm:w-auto h-11 px-7 rounded-full border border-rose-gold/30 hover:bg-rose-gold/5 text-rose-gold text-xs font-semibold tracking-wider uppercase transition-all duration-300 cursor-pointer"
+                >
+                  View in Directory
+                </button>
+              </div>
+
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
 
       {/* Modern Presentation Slides overlay module */}
       <PresentationSlides isOpen={isPresentationOpen} onClose={() => setIsPresentationOpen(false)} />
