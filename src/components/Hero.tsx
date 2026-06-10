@@ -36,10 +36,10 @@ export default function Hero({ onFindMatchClick, activeRequestsCount }: HeroProp
         </p>
 
         {/* CTA Hero Button */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 w-full max-w-xs mx-auto px-4">
           <button
             onClick={onFindMatchClick}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 h-14 rounded-full bg-rose-gold text-white font-medium tracking-wider text-base hover:bg-dusty-pink hover:scale-[1.03] hover:shadow-lg hover:shadow-rose-gold/20 active:scale-[0.98] transition-all duration-300 cursor-pointer"
+            className="w-full inline-flex items-center justify-center gap-3 px-8 h-14 rounded-full bg-rose-gold text-white font-medium tracking-wider text-base hover:bg-dusty-pink hover:scale-[1.03] hover:shadow-lg hover:shadow-rose-gold/20 active:scale-[0.98] transition-all duration-300 cursor-pointer shrink-0"
           >
             <ArrowLeftRight className="w-5 h-5" />
             Find My Match
