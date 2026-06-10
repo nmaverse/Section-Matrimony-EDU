@@ -7,6 +7,7 @@ import SectionGrid, { getFacebookUrl } from './components/SectionGrid';
 import FaqSection from './components/FaqSection';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
+import PresentationSlides from './components/PresentationSlides';
 import { INITIAL_SWAP_REQUESTS, INITIAL_FAQ } from './data';
 import { SwapRequest } from './types';
 import { ArrowLeftRight, Sparkles, MessageSquare, Facebook, Check, X, Lock, Unlock } from 'lucide-react';
@@ -32,6 +33,9 @@ export default function App() {
   const [theme, setTheme] = useState<'auto' | 'light' | 'dark'>(() => {
     return (localStorage.getItem('edu_section_matrimony_theme') as 'auto' | 'light' | 'dark') || 'dark';
   });
+
+  // State to manage slideshow presentation visibility
+  const [isPresentationOpen, setIsPresentationOpen] = useState(false);
 
   // Raised Administrative level authentication state
   const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
@@ -229,6 +233,7 @@ export default function App() {
         setTheme={setTheme}
         isAdminUnlocked={isAdminUnlocked}
         onAdminLoginClick={() => setIsAdminLoginOpen(true)}
+        onPresentationClick={() => setIsPresentationOpen(true)}
       />
 
       {/* Hero Header Module */}
@@ -423,6 +428,9 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* Modern Presentation Slides overlay module */}
+      <PresentationSlides isOpen={isPresentationOpen} onClose={() => setIsPresentationOpen(false)} />
 
     </div>
   );
