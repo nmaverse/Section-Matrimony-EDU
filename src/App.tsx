@@ -75,15 +75,18 @@ export default function App() {
       if (isFBOrInsta) {
         root.classList.add('dark');
         root.classList.remove('light');
+        root.style.colorScheme = 'dark';
         return;
       }
       if (theme === 'auto') {
         if (e.matches) {
           root.classList.add('dark');
           root.classList.remove('light');
+          root.style.colorScheme = 'dark';
         } else {
           root.classList.add('light');
           root.classList.remove('dark');
+          root.style.colorScheme = 'light';
         }
       }
     };
@@ -95,20 +98,25 @@ export default function App() {
       // Force dark mode inside Facebook / Instagram in-app browsers due to forced container darkening
       root.classList.add('dark');
       root.classList.remove('light');
+      root.style.colorScheme = 'dark';
     } else if (theme === 'dark') {
       root.classList.add('dark');
       root.classList.remove('light');
+      root.style.colorScheme = 'dark';
     } else if (theme === 'light') {
       root.classList.add('light');
       root.classList.remove('dark');
+      root.style.colorScheme = 'light';
     } else {
       // Auto (sync to device status)
       if (mediaQuery.matches) {
         root.classList.add('dark');
         root.classList.remove('light');
+        root.style.colorScheme = 'dark';
       } else {
         root.classList.add('light');
         root.classList.remove('dark');
+        root.style.colorScheme = 'light';
       }
     }
 
