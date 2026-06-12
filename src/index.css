@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  color-scheme: dark light;
+}
+
 @theme {
   --font-display: "Cormorant Garamond", serif;
   --font-sans: "Jost", sans-serif;
