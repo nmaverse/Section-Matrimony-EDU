@@ -67,9 +67,17 @@ export default function App() {
 
   // System preferred theme listeners and DOM class modifier layer
   useEffect(() => {
+    // Detect if inside Facebook/Instagram/Messenger WebView wrapper
+    const isFBOrInsta = /FBAN|FBAV|Instagram|Messenger/i.test(navigator.userAgent);
+
     const handleSystemTheme = (e: MediaQueryListEvent) => {
+      const root = document.documentElement;
+      if (isFBOrInsta) {
+        root.classList.add('dark');
+        root.classList.remove('light');
+        return;
+      }
       if (theme === 'auto') {
-        const root = document.documentElement;
         if (e.matches) {
           root.classList.add('dark');
           root.classList.remove('light');
@@ -83,7 +91,11 @@ export default function App() {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const root = document.documentElement;
 
-    if (theme === 'dark') {
+    if (isFBOrInsta) {
+      // Force dark mode inside Facebook / Instagram in-app browsers due to forced container darkening
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else if (theme === 'dark') {
       root.classList.add('dark');
       root.classList.remove('light');
     } else if (theme === 'light') {
