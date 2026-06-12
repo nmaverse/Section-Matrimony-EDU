@@ -68,6 +68,48 @@ html.dark {
   --input-color: #ffffff;
 }
 
+/* Bulletproof text overrides inside dark theme to defeat any auto-darken/force-invert Webview bug */
+html.dark, 
+html.dark body,
+html.dark .text-neutral-900,
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color-scheme: dark !important;
+}
+
+html.dark .text-neutral-900,
+html.dark .dark\:text-white {
+  color: #ffffff !important;
+}
+
+html.dark .text-neutral-800,
+html.dark .dark\:text-neutral-100 {
+  color: #f3f4f6 !important;
+}
+
+html.dark .text-neutral-700,
+html.dark .dark\:text-neutral-200 {
+  color: #e5e7eb !important;
+}
+
+html.dark .text-neutral-600,
+html.dark .dark\:text-neutral-300 {
+  color: #9ca3af !important;
+}
+
+html.dark .text-neutral-500,
+html.dark .dark\:text-neutral-400 {
+  color: #9ca3af !important;
+}
+
+html.dark .text-neutral-400 {
+  color: #9ca3af !important;
+}
+
 @layer base {
   body {
     font-family: var(--font-sans);
