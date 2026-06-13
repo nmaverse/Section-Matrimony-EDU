@@ -69,54 +69,75 @@ export default function App() {
   useEffect(() => {
     // Detect if inside Facebook/Instagram/Messenger WebView wrapper
     const isFBOrInsta = /FBAN|FBAV|Instagram|Messenger/i.test(navigator.userAgent);
+    const root = document.documentElement;
+
+    const updateColorSchemeMeta = (scheme: 'only dark' | 'only light') => {
+      // 1. Force inline CSS on root element to opt out of force darkening
+      root.style.colorScheme = scheme;
+
+      // 2. Query and set meta tags
+      let metaScheme = document.querySelector('meta[name="color-scheme"]');
+      if (!metaScheme) {
+        metaScheme = document.createElement('meta');
+        metaScheme.setAttribute('name', 'color-scheme');
+        document.head.appendChild(metaScheme);
+      }
+      metaScheme.setAttribute('content', scheme);
+
+      let metaSupported = document.querySelector('meta[name="supported-color-schemes"]');
+      if (!metaSupported) {
+        metaSupported = document.createElement('meta');
+        metaSupported.setAttribute('name', 'supported-color-schemes');
+        document.head.appendChild(metaSupported);
+      }
+      metaSupported.setAttribute('content', scheme);
+    };
 
     const handleSystemTheme = (e: MediaQueryListEvent) => {
-      const root = document.documentElement;
       if (isFBOrInsta) {
         root.classList.add('dark');
         root.classList.remove('light');
-        root.style.colorScheme = 'dark';
+        updateColorSchemeMeta('only dark');
         return;
       }
       if (theme === 'auto') {
         if (e.matches) {
           root.classList.add('dark');
           root.classList.remove('light');
-          root.style.colorScheme = 'dark';
+          updateColorSchemeMeta('only dark');
         } else {
           root.classList.add('light');
           root.classList.remove('dark');
-          root.style.colorScheme = 'light';
+          updateColorSchemeMeta('only light');
         }
       }
     };
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const root = document.documentElement;
 
     if (isFBOrInsta) {
       // Force dark mode inside Facebook / Instagram in-app browsers due to forced container darkening
       root.classList.add('dark');
       root.classList.remove('light');
-      root.style.colorScheme = 'dark';
+      updateColorSchemeMeta('only dark');
     } else if (theme === 'dark') {
       root.classList.add('dark');
       root.classList.remove('light');
-      root.style.colorScheme = 'dark';
+      updateColorSchemeMeta('only dark');
     } else if (theme === 'light') {
       root.classList.add('light');
       root.classList.remove('dark');
-      root.style.colorScheme = 'light';
+      updateColorSchemeMeta('only light');
     } else {
       // Auto (sync to device status)
       if (mediaQuery.matches) {
         root.classList.add('dark');
         root.classList.remove('light');
-        root.style.colorScheme = 'dark';
+        updateColorSchemeMeta('only dark');
       } else {
         root.classList.add('light');
         root.classList.remove('dark');
-        root.style.colorScheme = 'light';
+        updateColorSchemeMeta('only light');
       }
     }
 
